@@ -1,0 +1,33 @@
+/* Home page: LCD stats band, LED activity grid, paper call rows. Uses the shared plastic/LCD variables only. */
+.home-lcd { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; border-radius: 3px; border: 3px solid var(--bezel); color: var(--lcd-ink);
+  background: var(--lcd-line); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.4); overflow: hidden; }
+.home-stat { display: flex; flex-direction: column; gap: 8px; padding: 12px 10px 10px; min-width: 0; background: linear-gradient(180deg, var(--lcd-hi), var(--lcd)); }
+.home-stat b { position: relative; align-self: flex-start; font: 700 22px/1 var(--seg); letter-spacing: 0.02em; }
+.home-stat i { font: 700 8.5px/1.2 var(--ui); font-style: normal; font-stretch: 75%; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lcd-ink-2); }
+.home-two { display: grid; grid-template-columns: auto 1fr; gap: 28px; }
+.home-grid { display: grid; grid-template-columns: repeat(7, 16px); gap: 7px; padding: 10px; border-radius: 3px; background: var(--bezel); width: max-content; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); }
+.home-led { width: 16px; height: 16px; border-radius: 50%; background: #3b3a35; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.6); }
+.home-led[data-lit='1'] { background: #2f6a35; }
+.home-led[data-lit='2'] { background: radial-gradient(circle at 35% 30%, #b6f2a8, var(--led) 65%); box-shadow: 0 0 5px rgba(63, 174, 74, 0.7); }
+.home-led[data-lit='3'] { background: radial-gradient(circle at 35% 30%, #fff, #b6f2a8 40%, var(--led)); box-shadow: 0 0 9px 2px rgba(63, 174, 74, 0.95); }
+.home-top { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; font-size: 12.5px; }
+.home-top li { display: grid; grid-template-columns: 96px 1fr 22px; align-items: center; gap: 8px; }
+.home-top b { text-align: right; font-weight: 650; }
+.home-bar { height: 8px; border-radius: 2px; background: var(--prep); box-shadow: inset 0 1px 2px var(--shade); overflow: hidden; }
+.home-bar i { display: block; height: 100%; background: var(--ink-2); }
+.home-day { display: flex; flex-direction: column; gap: 6px; }
+.home-day > .note { text-transform: capitalize; }
+.home-day ul, .home-call-body ul { list-style: none; margin: 0; padding: 0; }
+.home-day > ul { display: flex; flex-direction: column; gap: 6px; }
+.home-call { border: 1px solid var(--sheet-line); border-radius: 4px; background: var(--prep); }
+.home-call-head { display: flex; align-items: flex-start; gap: 10px; width: 100%; padding: 9px 10px; border: 0; background: transparent; color: var(--ink); text-align: left; }
+.home-call-head .lamp { margin-top: 5px; }
+.home-call-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.home-call-main b { font-size: 13.5px; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-call-point { font-size: 12.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-call-head .chip { flex: none; margin-top: 1px; }
+.home-call-body { display: flex; flex-direction: column; gap: 6px; padding: 2px 12px 12px 26px; font-size: 12.5px; }
+.home-call-body li { padding: 2px 0 2px 12px; position: relative; }
+.home-call-body li::before { content: ''; position: absolute; left: 0; top: 0.75em; width: 4px; height: 4px; border-radius: 50%; background: var(--ink-3); }
+.home-call-body li.done { text-decoration: line-through; color: var(--ink-3); }
+.home-actions { display: flex; gap: 8px; margin-top: 6px; }

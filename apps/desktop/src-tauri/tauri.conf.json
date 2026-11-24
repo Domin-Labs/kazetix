@@ -1,0 +1,83 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Kazetix",
+  "version": "0.1.0",
+  "identifier": "cz.dpstudio.kazetix",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "overlay",
+        "title": "Kazetix",
+        "width": 440,
+        "height": 660,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "resizable": true,
+        "visible": false,
+        "focus": false,
+        "contentProtected": true,
+        "shadow": false,
+        "dragDropEnabled": false,
+        "transparent": true,
+        "minWidth": 300,
+        "minHeight": 48,
+        "maxWidth": 660
+      },
+      {
+        "label": "toast",
+        "title": "Kazetix",
+        "width": 440,
+        "height": 660,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "resizable": false,
+        "visible": false,
+        "focus": false,
+        "contentProtected": true,
+        "shadow": false,
+        "dragDropEnabled": false,
+        "transparent": true
+      },
+      {
+        "label": "settings",
+        "title": "Kazetix — Settings",
+        "width": 900,
+        "height": 660,
+        "minWidth": 760,
+        "minHeight": 540,
+        "visible": false,
+        "center": true,
+        "backgroundColor": "#e4dccb",
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost https://openrouter.ai; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "kazetix",
+  "private": true,
+  "license": "FSL-1.1-ALv2",
+  "packageManager": "pnpm@10.20.0",
+  "scripts": {
+    "server": "pnpm --filter @kazetix/server start",
+    "server:test": "pnpm --filter @kazetix/server test",
+    "desktop:dev": "pnpm --filter @kazetix/desktop dev",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

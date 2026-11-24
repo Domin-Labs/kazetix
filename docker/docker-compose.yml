@@ -1,0 +1,24 @@
+# Deploy (on the server, repo checked out anywhere):
+#   cp .env.example .env   # fill it in
+#   mkdir -p data && chown -R 1000:1000 data
+#   docker compose -f docker/docker-compose.yml up -d --build
+# Then point a reverse proxy with HTTPS at http://127.0.0.1:8767.
+name: kazetix
+services:
+  kazetix:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: kazetix-server:latest
+    container_name: kazetix
+    restart: unless-stopped
+    env_file: ../.env
+    volumes:
+      - ../data:/data          # SQLite DB + audio, outside any webspace
+    ports:
+      - "127.0.0.1:8767:8767"  # localhost only — the reverse proxy terminates TLS
+    stop_grace_period: 30s
+    mem_limit: 1g
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }

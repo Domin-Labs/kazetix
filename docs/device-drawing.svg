@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 900" font-family="Archivo, Arial Narrow, sans-serif" font-size="13">
+  <!-- Kazetix machine, third-angle orthographic views at base scale (front width 440 = the overlay at 100%).
+       Front 440 × 660, thickness 96, corner radius 32, chamfer 8 around every face. Capsule = TOP view. -->
+  <rect width="980" height="900" fill="#f6efe2"/>
+  <g stroke="#1c160f" fill="none" stroke-width="1.5">
+    <!-- TOP view (above the front, same width) -->
+    <rect x="60" y="40" width="440" height="96" rx="16"/>
+    <rect x="68" y="48" width="424" height="80" rx="10" stroke-dasharray="4 3"/>
+    <rect x="130" y="56" width="300" height="8" rx="2" fill="#1c160f"/>
+    <rect x="130" y="64" width="300" height="14" rx="2"/>
+    <rect x="76" y="82" width="408" height="40" rx="7"/>
+    <!-- FRONT view -->
+    <rect x="60" y="176" width="440" height="660" rx="32"/>
+    <rect x="68" y="184" width="424" height="644" rx="26" stroke-dasharray="4 3"/>
+    <rect x="91" y="335" width="377" height="349" rx="6"/>
+    <rect x="80" y="259" width="400" height="47" rx="6"/>
+    <rect x="113" y="737" width="76" height="62"/>
+    <rect x="358" y="728" width="117" height="82" rx="8"/>
+    <!-- RIGHT SIDE view (same height, width = thickness) -->
+    <rect x="560" y="176" width="96" height="660" rx="16"/>
+    <rect x="568" y="184" width="80" height="644" rx="10" stroke-dasharray="4 3"/>
+  </g>
+  <g stroke="#8a7f6c" stroke-width="1" stroke-dasharray="2 4">
+    <path d="M60 136V176M500 136V176M500 176H560M500 836H560"/>
+  </g>
+  <g fill="#1c160f">
+    <text x="60" y="30" font-weight="700">TOP · capsule window · 440 × 96</text>
+    <text x="440" y="74" text-anchor="end">prep slot + INSERT flap</text>
+    <text x="490" y="106" text-anchor="end">control tray</text>
+    <text x="60" y="860" font-weight="700">FRONT · overlay · 440 × 660</text>
+    <text x="560" y="860" font-weight="700">SIDE · 96 × 660</text>
+    <text x="700" y="200">Dashed line: inner edge of the 8 px chamfer</text>
+    <text x="700" y="222">Thickness T = 96 at front width 440 (ratio 0.218)</text>
+    <text x="700" y="244">Everything scales with the overlay width</text>
+  </g>
+</svg>
