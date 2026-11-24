@@ -1,4 +1,4 @@
-// End-to-end self-check: real server + fake ElevenLabs/OpenRouter. Run: pnpm --filter @kazetix/server test
+// End-to-end self-check: real server + fake OpenRouter. Run: pnpm --filter @kazetix/server test
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { mkdtempSync, rmSync } from 'node:fs';
@@ -144,6 +144,16 @@ try {
   await call('POST', `/api/meetings/${id}/finish`, { ended_at: '2026-11-04T10:30:00+01:00' });
   for (let i = 0; i < 50 && (await call('GET', `/api/meetings/${id}`)).body.status !== 'done'; i++) await new Promise((r) => setTimeout(r, 100));
   assert.equal(sttCalls, billed, 'transcribed once');
+
+  // --- home overview (desktop Home page)
+  const ov = (await call('GET', '/api/meetings?limit=50&today=2026-11-04')).body;
+  assert.equal(ov.source, 'server');
+  assert.deepEqual([ov.stats.calls, ov.stats.calls_month, ov.stats.words, ov.stats.open_items > 0], [1, 1, 7, true]);
+  assert.equal(ov.activity.length, 35);
+  assert.equal(ov.activity[34].day, '2026-11-04');
+  assert.equal(ov.recent[0].id, id);
+  assert.equal(Object.values(ov.platforms).reduce((a: number, b) => a + (b as number), 0), 1);
+  assert.equal((await call('GET', '/api/meetings', undefined, {})).status, 401);
 
   // --- MCP tools on the finished meeting
   assert.equal((await tool('list_meetings')).meetings[0].id, id);

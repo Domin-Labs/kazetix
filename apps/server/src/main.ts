@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import type { Server } from 'node:http';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import { MeetingCreate, SegmentBatch, HintIn, MarkIn, Finish } from '@kazetix/shared';
-import { openDb, getMeeting, meetingView, now, setStatus, tx, channelLabel, type DB } from './db.ts';
+import { openDb, getMeeting, meetingView, homeOverview, now, setStatus, tx, channelLabel, type DB } from './db.ts';
 import { startWorker, enqueue } from './worker.ts';
 import { mountMcp } from './mcp.ts';
 
@@ -80,6 +80,11 @@ export function createApp(db: DB, cfg: Config) {
     if (!m) res.status(404).json({ error: 'meeting not found' });
     return m;
   };
+
+  api.get('/meetings', (req, res) => {
+    const today = /^\d{4}-\d{2}-\d{2}$/.test(String(req.query.today)) ? String(req.query.today) : new Date().toISOString().slice(0, 10);
+    res.json(homeOverview(db, today, Math.min(200, Math.max(1, Number(req.query.limit) || 50))));
+  });
 
   api.get('/meetings/:id', (req, res) => {
     const v = meetingView(db, String(req.params.id));

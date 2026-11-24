@@ -137,3 +137,30 @@ export function mmss(ms: number) {
   const ss = String(s % 60).padStart(2, '0');
   return h ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
 }
+
+/** Home overview for the desktop (same JSON as the app's local one). `today` = client's local YYYY-MM-DD. */
+export function homeOverview(db: DB, today: string, limit = 50) {
+  const all = db.prepare('SELECT id, started_at, COALESCE(duration_s, 0) AS dur, platform FROM meetings ORDER BY started_at DESC').all() as { id: string; started_at: string; dur: number; platform: string | null }[];
+  const perDay = new Map<string, number>();
+  const platforms: Record<string, number> = {};
+  let month = 0, secs = 0, words = 0;
+  for (const m of all) {
+    const d = m.started_at.slice(0, 10);
+    perDay.set(d, (perDay.get(d) ?? 0) + 1);
+    if (m.started_at.startsWith(today.slice(0, 7))) month++;
+    secs += m.dur;
+    words += transcriptRows(db, m.id).rows.reduce((n, r) => n + r.text.split(/\s+/).filter(Boolean).length, 0);
+    const p = ['teams', 'meet', 'zoom'].includes(m.platform ?? '') ? m.platform! : 'other';
+    platforms[p] = (platforms[p] ?? 0) + 1;
+  }
+  const end = Date.parse(`${today}T00:00:00Z`);
+  const activity = Array.from({ length: 35 }, (_, i) => {
+    const day = new Date(end - (34 - i) * 864e5).toISOString().slice(0, 10);
+    return { day, count: perDay.get(day) ?? 0 };
+  });
+  const open = (db.prepare('SELECT COUNT(*) AS n FROM action_items WHERE done = 0').get() as { n: number }).n;
+  return {
+    source: 'server', stats: { calls: all.length, calls_month: month, hours: secs / 3600, words, open_items: open },
+    activity, platforms, recent: all.slice(0, limit).map((m) => meetingView(db, m.id)),
+  };
+}

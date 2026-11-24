@@ -1,6 +1,6 @@
 {
   "name": "@kazetix/desktop",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "license": "FSL-1.1-ALv2",
   "type": "module",

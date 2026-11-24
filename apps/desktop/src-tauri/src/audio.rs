@@ -1,8 +1,7 @@
 //! Audio capture: microphone + WASAPI loopback of an output device, both resampled to 16 kHz mono i16
 //! and delivered as aligned 20 ms frames (mic, system).
 //!
-//! ponytail: written directly on cpal (the same WASAPI path Meetily's audio module uses, incl. loopback by opening an
-//! input stream on an output device) instead of vendoring Meetily — no copied code, no license notice needed.
+//! ponytail: written directly on cpal (WASAPI, incl. loopback by opening an input stream on an output device).
 //! Per-process loopback (only Teams/Chrome) is a later phase.
 
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};

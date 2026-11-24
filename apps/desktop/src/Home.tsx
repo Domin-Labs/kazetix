@@ -8,6 +8,7 @@ type Overview = {
   activity: { day: string; count: number }[];
   platforms: Record<string, number>;
   recent: MeetingView[];
+  error?: string;
 };
 
 const PLATFORMS = ['teams', 'meet', 'zoom', 'other'];
@@ -64,7 +65,7 @@ function Call({ m }: { m: MeetingView }) {
   );
 }
 
-export default function Home({ s }: { s: Settings }) {
+export default function Home(_: { s: Settings }) {
   const [o, setO] = useState<Overview | null>(null);
   useEffect(() => void api.homeOverview().then(setO), []);
   if (!o) return <h1>{t('Home')}</h1>;
@@ -81,8 +82,8 @@ export default function Home({ s }: { s: Settings }) {
           <Stat n={String(o.stats.open_items)} label={t('Open action items')} />
         </div>
       )}
-      {o.source === 'server' || s.storage === 'server' ? (
-        <p className="note">{t('Your calls are stored on your server. Read them from Claude through MCP; this overview shows calls kept on this PC.')}</p>
+      {o.error ? (
+        <p className="note">{t('Could not load calls from your server: {e}', { e: o.error })}</p>
       ) : o.recent.length === 0 ? (
         <p className="note">{t('No calls yet. Calls appear here after you record one: start from the tray icon or when Kazetix offers to record a Teams, Meet or Zoom call.')}</p>
       ) : (

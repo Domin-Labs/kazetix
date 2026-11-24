@@ -30,3 +30,16 @@ pnpm build
 cd src-tauri
 cargo build --release --target x86_64-pc-windows-msvc --features tauri/custom-protocol "$@"
 ls -la target/x86_64-pc-windows-msvc/release/kazetix.exe
+
+# Installer (NSIS): run with INSTALLER=1. Needs makensis (apt package nsis, or its
+# .deb extracted with NSISDIR pointing at usr/share/nsis). tauri-cli asks pkg-config for the Linux tray library even when
+# bundling for Windows, so a throwaway shim answers that one query.
+if [ "${INSTALLER:-}" = 1 ]; then
+  SHIM=$(mktemp -d)
+  printf '#!/bin/sh\ncase "$*" in *appindicator*) case "$*" in *--variable=libdir*) echo /usr/lib/x86_64-linux-gnu;; *--modversion*) echo 0.5.93;; *--exists*) ;; *) echo "-L/usr/lib/x86_64-linux-gnu -layatana-appindicator3";; esac; exit 0;; esac\nexit 1\n' > "$SHIM/pkg-config"
+  chmod +x "$SHIM/pkg-config"
+  cd ..
+  PATH="$SHIM:$PATH" TAURI_LINUX_AYATANA_APPINDICATOR=true npx tauri bundle --target x86_64-pc-windows-msvc --bundles nsis
+  rm -rf "$SHIM"
+  ls -la src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
+fi

@@ -502,13 +502,18 @@ async fn meeting_status(st: S<'_>, id: String) -> Result<Value, String> {
     st.server.get(&format!("/api/meetings/{id}")).await.map_err(|e| e.to_string())
 }
 
-/// Home page of the settings window. Server mode has no list endpoint: an empty overview that says so.
+/// Home page of the settings window: local archive, or the server's `GET /api/meetings` in server mode (offline: empty + `error`).
 #[tauri::command]
-fn home_overview(st: S<'_>) -> Result<Value, String> {
-    if st.settings.lock().unwrap().storage == "server" {
-        return Ok(serde_json::json!({ "source": "server", "stats": null, "activity": [], "platforms": {}, "recent": [] }));
+async fn home_overview(st: S<'_>) -> Result<Value, String> {
+    let today = chrono::Local::now().format("%Y-%m-%d").to_string();
+    let server_mode = st.settings.lock().unwrap().storage == "server";
+    if server_mode {
+        return Ok(match st.server.get(&format!("/api/meetings?limit=50&today={today}")).await {
+            Ok(v) => v,
+            Err(e) => serde_json::json!({ "source": "server", "stats": null, "activity": [], "platforms": {}, "recent": [], "error": e.to_string() }),
+        });
     }
-    store::home_overview(&st.db.lock().unwrap(), &chrono::Local::now().format("%Y-%m-%d").to_string()).map_err(|e| e.to_string())
+    store::home_overview(&st.db.lock().unwrap(), &today).map_err(|e| e.to_string())
 }
 
 /// Level meters for the settings page while not recording.

@@ -317,7 +317,7 @@ mod tests {
     use crate::transcript::Turn;
 
     fn ctx() -> Ctx {
-        Ctx { version: "0.1.0".into(), stt_model: "elevenlabs/scribe-v2".into(), summary_model: "m".into(), openrouter: true }
+        Ctx { version: "1.0.0".into(), stt_model: "elevenlabs/scribe-v2".into(), summary_model: "m".into(), openrouter: true }
     }
 
     fn rpc(c: &Connection, method: &str, params: Value) -> Value {

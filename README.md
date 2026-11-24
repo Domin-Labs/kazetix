@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/images/logo-ink.webp" alt="Kazetix" width="360"></p>
 
-<p align="center"><b>Live call transcripts, in-call hints and notes after the call — a 1980s answering machine for Teams, Meet and Zoom.<br>Self-hosted, with MCP for Claude.</b></p>
+<p align="center"><b>Live call transcripts, in-call hints and notes after the call — a 1980s answering machine for Teams, Meet and Zoom.<br>Local by default, optionally self-hosted, with MCP for Claude.</b></p>
 
 <p align="center"><img src="docs/images/overlay-transcript-en-beige.webp" alt="Kazetix overlay with a live two-channel transcript" width="440"></p>
 
@@ -33,25 +33,30 @@ The overlay is excluded from screen capture, and a local stereo Ogg/Opus backup 
 ## Install
 
 **Requirements:** Windows 10 (2004 or newer) or Windows 11, the WebView2 runtime (built into Windows 11), and an
-OpenRouter API key.
+[OpenRouter](https://openrouter.ai/keys) API key.
 
-**One prompt.** Give this to Claude or ChatGPT and let it walk you through the setup:
+**Download:** [Kazetix-Setup-x64.exe](https://github.com/Domin-Labs/kazetix/releases/latest/download/Kazetix-Setup-x64.exe)
+(per-user installer, no admin rights needed).
+
+**Or let an AI do it.** Give this to Claude or ChatGPT:
 
 > Install Kazetix for me by following https://github.com/Domin-Labs/kazetix/blob/main/INSTALL.md. Ask me before each step that needs my keys or my server.
 
+On first start open Settings, **Storage & AI**: enter your OpenRouter key (stored in Windows Credential Manager) and
+choose where calls are kept: **On this PC** (default) or **Own server** (address and API token, then Verify).
+Default shortcuts: `Ctrl+Alt+Shift+R` start/stop, `Ctrl+Alt+Shift+O` overlay, `Ctrl+Alt+Shift+K` chat,
+`Ctrl+Alt+Shift+M` mark. Local data and the log (never containing transcript text) live in `%APPDATA%\cz.dpstudio.kazetix`
+(override with the `KAZETIX_DATA_DIR` environment variable).
+
 **Build from source (Linux or WSL).** The app is cross-compiled to `x86_64-pc-windows-msvc` with clang-cl/lld-link
-(LLVM 18+, `cmake`, `ninja`) and the MSVC CRT + Windows SDK fetched by [xwin](https://github.com/Jake-Shadle/xwin):
+(LLVM 18+, `cmake`, `ninja`, Rust, Node 24, pnpm) and the MSVC CRT + Windows SDK fetched by [xwin](https://github.com/Jake-Shadle/xwin):
 
 ```bash
+pnpm install
 xwin --accept-license --arch x86_64 --variant desktop splat --output ~/.local/toolchains/xwin-sdk   # once
 scripts/build-windows.sh     # UI + release exe -> apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release/kazetix.exe
-scripts/install-windows.sh   # copy to %LOCALAPPDATA%\Programs\Kazetix, Start-menu shortcut, launch
+scripts/install-windows.sh   # run from WSL: copy to %LOCALAPPDATA%\Programs\Kazetix, Start-menu shortcut, launch
 ```
-
-On first start Settings opens: enter your OpenRouter key (stored in Windows Credential Manager) and, optionally, your
-server address and API token. Defaults: `Ctrl+Alt+Shift+R` start/stop, `Ctrl+Alt+Shift+O` overlay,
-`Ctrl+Alt+Shift+K` chat, `Ctrl+Alt+Shift+M` mark. Logs (never containing transcript text):
-`%APPDATA%\cz.dpstudio.kazetix\kazetix.log`.
 
 **Cost (OpenRouter).** Scribe v2 is $0.22 per hour of audio. Live transcription is billed only for detected speech, per
 channel (at most $0.44/h with two channels); the exact transcript after the call is $0.22/h per channel. LLM usage for
@@ -79,19 +84,23 @@ docker compose -f docker/docker-compose.yml up -d --build
 Put an HTTPS reverse proxy in front of `127.0.0.1:8767` (no buffering, long read timeout, body size of at least 80 MB).
 `PUBLIC_BASE_URL` must be that public address, e.g. `https://kazetix.example.com`.
 
-REST API (Bearer `KAZETIX_API_TOKEN`): `GET /api/health`, `POST /api/meetings`, `POST /api/meetings/:id/segments`,
+REST API (Bearer `KAZETIX_API_TOKEN`): `GET /api/health`, `GET`/`POST /api/meetings`, `POST /api/meetings/:id/segments`,
 `POST /api/meetings/:id/hints`, `POST /api/meetings/:id/marks`, `PUT /api/meetings/:id/audio` (resumable, `Content-Range`),
 `POST /api/meetings/:id/finish`, `GET /api/meetings/:id`.
 
 ## Connect Claude (MCP)
 
-Endpoint `https://kazetix.example.com/mcp` on your server. Tools: `list_meetings`, `get_meeting`, `read_transcript`,
-`search`, `get_action_items`, `get_live_meeting`, `mark_exported`, `status`.
+Tools (same on both routes): `list_meetings`, `get_meeting`, `read_transcript`, `search`, `get_action_items`,
+`get_live_meeting`, `mark_exported`, `status`.
 
-- **claude.ai:** Settings, Connectors, Add custom connector, `https://kazetix.example.com/mcp`, sign in with `KAZETIX_MCP_PASSWORD`.
+**Local archive (no server).** Settings, Storage & AI, **Add to Claude Desktop** registers `Kazetix.exe --mcp` and
+you restart Claude Desktop; Claude starts it in the background when needed. For Claude Code:
+`claude mcp add kazetix -- "<path to Kazetix.exe>" --mcp` (Settings shows the exact command).
+
+**Your server.** Endpoint `https://kazetix.example.com/mcp`.
+
+- **claude.ai:** Settings, Connectors, Add custom connector, the URL above, sign in with `KAZETIX_MCP_PASSWORD`.
 - **Claude Code:** `claude mcp add --transport http kazetix https://kazetix.example.com/mcp` (sign in in the browser), or headless with `--header "Authorization: Bearer <KAZETIX_API_TOKEN>"`.
-
-Without a server, the desktop app keeps its own archive and can register itself with Claude Desktop and Claude Code (Settings).
 
 ## Configuration (server)
 

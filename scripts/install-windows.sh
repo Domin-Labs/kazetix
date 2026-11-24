@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Installs the cross-compiled desktop build for the current Windows user (run from WSL):
 # copies it to %LOCALAPPDATA%\Programs\Kazetix, adds a Start-menu shortcut and starts it.
-# ponytail: no installer yet (later phase); this is all a single-exe Tauri app needs on Windows 11 (WebView2 is built in).
+# Dev helper for the plain exe; end users get the NSIS installer from the GitHub release.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 EXE=${1:-apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release/kazetix.exe}

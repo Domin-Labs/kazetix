@@ -201,7 +201,7 @@ const CS: Record<string, string> = {
   Home: 'Přehled', 'Calls this month': 'Hovorů tento měsíc', 'Hours recorded': 'Nahraných hodin', 'Words transcribed': 'Přepsaných slov', 'Open action items': 'Otevřených úkolů',
   'Last 5 weeks': 'Posledních 5 týdnů', 'Top platforms': 'Podle platformy', Other: 'Jiné', 'Recent calls': 'Poslední hovory', Today: 'Dnes', Yesterday: 'Včera', 'en-GB': 'cs-CZ',
   Done: 'Hotovo', Error: 'Chyba', Transcribing: 'Přepisuje se', '{n} to do': '{n} úkolů', Summary: 'Shrnutí', 'Action items': 'Úkoly', 'No summary yet.': 'Zatím bez shrnutí.',
-  'Your calls are stored on your server. Read them from Claude through MCP; this overview shows calls kept on this PC.': 'Hovory jsou uložené na vašem serveru. Čtěte je z Claude přes MCP; tento přehled ukazuje hovory uložené v tomto počítači.',
+  'Could not load calls from your server: {e}': 'Hovory se nepodařilo načíst ze serveru: {e}',
   'No calls yet. Calls appear here after you record one: start from the tray icon or when Kazetix offers to record a Teams, Meet or Zoom call.': 'Zatím žádné hovory. Objeví se tu po prvním nahrání: spusťte ho z ikony v liště nebo když Kazetix nabídne nahrát hovor v Teams, Meet či Zoomu.',
   Settings: 'Nastavení', General: 'Obecné', 'Audio & transcription': 'Zvuk a přepis', 'Server & AI': 'Server a AI', 'Keyboard shortcuts': 'Klávesové zkratky',
   Devices: 'Zařízení', 'Microphone · Me': 'Mikrofon · Vy', 'System audio · Others': 'Systémový zvuk · Ostatní', 'System default': 'Výchozí zařízení systému',

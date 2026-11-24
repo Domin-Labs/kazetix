@@ -153,7 +153,7 @@ async function pauses(file: string): Promise<number[]> {
 }
 
 /**
- * Exact transcript: ElevenLabs Scribe v2 through OpenRouter (same as comulytic-mcp). OpenRouter has no multichannel
+ * Exact transcript: ElevenLabs Scribe v2 through OpenRouter. OpenRouter has no multichannel
  * mode, so the stereo recording is split with ffmpeg: L (the user) as-is, R (the others) diarized.
  * Each channel goes as one request; if that fails on a long recording (upstream timeout ~2 min, hit by ~95 min diarized),
  * it is re-sent in pieces of at most cfg.sttChunkS, cut in pauses so no word is split.
