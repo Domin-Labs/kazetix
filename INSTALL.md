@@ -2,7 +2,7 @@
 
 This file is written so an AI assistant (Claude, ChatGPT) can walk you through the whole setup after one prompt:
 
-> Install Kazetix for me by following https://github.com/patelidom/kazetix/blob/main/INSTALL.md. Ask me before each step that needs my keys or my server.
+> Install Kazetix for me by following https://github.com/Domin-Labs/kazetix/blob/main/INSTALL.md. Ask me before each step that needs my keys or my server.
 
 Kazetix has two parts: the **Windows app** (records the call, live transcript, hints, chat) and **your server**
 (exact transcript, summary, action items, archive over MCP). The server runs either **locally on your PC** with Node, or
@@ -16,7 +16,7 @@ in **Docker** on a machine you control.
 
 ## 1. The Windows app
 
-Download the latest build from https://github.com/patelidom/kazetix/releases/latest and run it.
+Download the latest build from https://github.com/Domin-Labs/kazetix/releases/latest and run it.
 If there is no release yet, build it yourself from WSL: see "Build from source" in README.md.
 
 ## 2. The server
@@ -28,7 +28,7 @@ Generate two secrets first (any machine with OpenSSL, or PowerShell
 - `KAZETIX_MCP_PASSWORD`: sign-in password for claude.ai / Claude Code connectors.
 
 ```bash
-git clone https://github.com/patelidom/kazetix.git && cd kazetix
+git clone https://github.com/Domin-Labs/kazetix.git && cd kazetix
 cp .env.example .env       # fill in the two secrets, OPENROUTER_API_KEY and PUBLIC_BASE_URL
 ```
 

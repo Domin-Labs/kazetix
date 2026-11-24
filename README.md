@@ -37,7 +37,7 @@ OpenRouter API key.
 
 **One prompt.** Give this to Claude or ChatGPT and let it walk you through the setup:
 
-> Install Kazetix for me by following https://github.com/patelidom/kazetix/blob/main/INSTALL.md. Ask me before each step that needs my keys or my server.
+> Install Kazetix for me by following https://github.com/Domin-Labs/kazetix/blob/main/INSTALL.md. Ask me before each step that needs my keys or my server.
 
 **Build from source (Linux or WSL).** The app is cross-compiled to `x86_64-pc-windows-msvc` with clang-cl/lld-link
 (LLVM 18+, `cmake`, `ninja`) and the MSVC CRT + Windows SDK fetched by [xwin](https://github.com/Jake-Shadle/xwin):
