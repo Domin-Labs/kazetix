@@ -479,3 +479,17 @@ body.settings-window { background: url('./assets/tex-beige.webp') 0 0 / 256px; }
 
 .cap-face { justify-content: center; padding: 8px; }
 .cap-tray { flex: none; height: 50px; }
+
+/* the display flipped out of the capsule: a bezel hinged on the capsule's front edge, swinging down toward you */
+.flip { margin: -4px 10px 0; perspective: 700px; }
+.flip-hinge { display: block; height: 8px; margin: 0 22px; border-radius: 0 0 4px 4px; background: linear-gradient(180deg, #2b2925, #45423c 60%, #2b2925); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6); }
+.flip-body { height: 190px; padding: 6px; border-radius: 4px 4px 12px 12px; background: linear-gradient(180deg, #3d3a35, #2a2824); transform-origin: top center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 18px rgba(0, 0, 0, 0.45); animation: flipout 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.1) both; }
+@keyframes flipout { from { transform: rotateX(-88deg); } to { transform: rotateX(0); } }
+.flip-lcd { height: 100%; padding: 8px 12px; gap: 6px; justify-content: flex-end; overflow: hidden; border-radius: 6px; }
+.flip-hint { padding: 6px 8px; border-radius: 3px; border: 1.5px solid var(--lcd-ink); }
+.flip-hint .label { color: var(--lcd-ink-2); }
+.flip-hint p { margin: 3px 0 0; font-size: 13px; line-height: 1.4; font-weight: 600; color: var(--lcd-ink); }
+.flip-line { margin: 0; font-size: 12.5px; line-height: 1.4; color: var(--lcd-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.flip-line b { font: 700 10px/1 var(--ui); font-stretch: 78%; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 4px; }
+.cap-key.icon[aria-pressed='true'] { transform: translateY(2px); box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.5); }

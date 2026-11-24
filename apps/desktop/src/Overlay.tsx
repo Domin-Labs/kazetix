@@ -14,9 +14,12 @@ const win = getCurrentWindow();
 // The overlay can be resized by dragging its edge; the machine keeps its 2:3 shape and scales as a whole (CSS zoom).
 const BASE_W = 440;
 const CAP_H = 96; // the machine's thickness at BASE_W (docs/device-drawing.svg)
+const HINT_H = 170; // hint card under the capsule
+const FLIP_H = 210; // the display flipped out of the capsule on its hinge
 const ovW = () => Math.min(660, Math.max(300, Number(localStorage.getItem('kazetix.overlay.w')) || BASE_W));
 
-async function placeWindow(mode: 'expanded' | 'capsule', hintOpen: boolean, pos: [number, number] | null) {
+/** `extra`: px (at BASE_W) hanging under the capsule: the hint card or the flipped-out display. */
+async function placeWindow(mode: 'expanded' | 'capsule', extra: number, pos: [number, number] | null) {
   const mon = (await currentMonitor()) ?? (await primaryMonitor());
   if (!mon) return;
   const k = mon.scaleFactor;
@@ -24,7 +27,7 @@ async function placeWindow(mode: 'expanded' | 'capsule', hintOpen: boolean, pos:
   if (mode === 'capsule') {
     // the capsule is the same machine seen from its side: as wide as the front, as tall as the machine is thick
     const w = ovW();
-    await win.setSize(new LogicalSize(w, Math.round((hintOpen ? CAP_H + 170 : CAP_H) * (w / BASE_W))));
+    await win.setSize(new LogicalSize(w, Math.round((CAP_H + extra) * (w / BASE_W))));
     await win.setPosition(new LogicalPosition(Math.round(mx + (mw - w) / 2), Math.round(my + 10)));
   } else {
     const w = ovW();
@@ -77,6 +80,9 @@ export default function Overlay() {
   const [hintBusy, setHintBusy] = useState(false);
   const [hintErr, setHintErr] = useState<string | null>(null);
   const [popup, setPopup] = useState<Card | null>(null);
+  const [flip, setFlip] = useState(false);
+  const flipRef = useRef(false);
+  flipRef.current = flip;
   const [pinned, setPinned] = useState(true);
   const [nowId, setNowId] = useState<string | null>(null);
   const [asks, setAsks] = useState<Ask[]>([]);
@@ -137,10 +143,10 @@ export default function Overlay() {
       modeRef.current = m; // 'overlay-shown' follows right away, before the re-render
       setMode(m);
       setTab('transcript');
-      placeWindow(m, false, settings?.overlay_pos ?? null);
+      placeWindow(m, flipRef.current && m === 'capsule' ? FLIP_H : 0, settings?.overlay_pos ?? null);
     } else setSnap({ active: false });
   });
-  useEvent('overlay-shown', () => placeWindow(modeRef.current, !!popup, settings?.overlay_pos ?? null));
+  useEvent('overlay-shown', () => placeWindow(modeRef.current, modeRef.current === 'capsule' ? (flipRef.current ? FLIP_H : popup ? HINT_H : 0) : 0, settings?.overlay_pos ?? null));
   useEvent('focus-chat', () => {
     setTab('assist');
     if (modeRef.current === 'capsule') expand();
@@ -220,12 +226,13 @@ export default function Overlay() {
       setAsks((prev) => h.follow_up_questions.filter((q) => !dismissed.current.has(q)).slice(0, 3).map((q) => prev.find((a) => a.q === q) ?? { q, added: Date.now() }));
       setHintErr(null);
       api.saveHint(card.id, card.at_ms, h);
-      if (modeRef.current === 'capsule') {
+      if (modeRef.current === 'capsule' && !flipRef.current) {
+        // the flipped-out display already shows the hint; otherwise it slides out under the capsule for a while
         setPopup(card);
-        placeWindow('capsule', true, null);
+        placeWindow('capsule', HINT_H, null);
         setTimeout(() => {
           setPopup((p) => (p?.id === card.id ? null : p));
-          if (modeRef.current === 'capsule') placeWindow('capsule', false, null);
+          if (modeRef.current === 'capsule' && !flipRef.current) placeWindow('capsule', 0, null);
         }, 12_000);
       }
     } catch (e) {
@@ -270,12 +277,12 @@ export default function Overlay() {
 
   const collapse = () => {
     setMode('capsule');
-    placeWindow('capsule', false, null);
+    placeWindow('capsule', flipRef.current ? FLIP_H : 0, null);
   };
   function expand() {
     setMode('expanded');
     setPopup(null);
-    placeWindow('expanded', false, settings?.overlay_pos ?? null);
+    placeWindow('expanded', 0, settings?.overlay_pos ?? null);
   }
 
   const elapsed = (snap.elapsed_ms ?? 0) + (snap.active ? now - snapAt : 0);
@@ -321,11 +328,14 @@ export default function Overlay() {
           <button className="cap-key" onClick={() => { expand(); setTab('assist'); }}>
             <span className={`lamp ${freshCount > 0 ? 'on' : ''}`} />{t('Assist')}{freshCount > 0 && <span className="badge">{freshCount}</span>}
           </button>
+          <button className="cap-key icon" aria-label={t('Flip out the display')} title={t('Flip out the display')} aria-pressed={flip}
+            onClick={() => { const v = !flip; setFlip(v); setPopup(null); placeWindow('capsule', v ? FLIP_H : 0, null); }}><KeyIcon kind="flip" /></button>
           <button className="cap-key red" onClick={() => api.stop()}>{t('End')}</button>
           </div>
           </div>
         </div>
-        {popup && (
+        {flip && <FlipDisplay segs={segs} card={cards.find((c) => c.id === nowId) ?? null} />}
+        {popup && !flip && (
           <div className="card hl capsule-hint">
             <div className="card-head"><span className="label">{t('Question')} · {mmss(popup.at_ms)}</span></div>
             <div className="card-body">
@@ -416,6 +426,29 @@ export default function Overlay() {
       </div>
       <span className="hw hw-live" aria-hidden="true"><span className={`lamp ${sttDown ? 'amber' : 'on'}`} /></span>
       <button className="hw key hw-end" onClick={() => api.stop()}>{t('End')}</button>
+    </div>
+  );
+}
+
+/** The display flipped out of the capsule on a hinge: the latest lines and the current hint, read at a glance. */
+function FlipDisplay({ segs, card }: { segs: Segment[]; card: Card | null }) {
+  return (
+    <div className="flip">
+      <span className="flip-hinge" aria-hidden="true" />
+      <div className="flip-body">
+        <div className="lcd flip-lcd">
+          {card && (
+            <div className="flip-hint">
+              <span className="label">{card.hint.question ? t('Question') : t('Say next')} · {mmss(card.at_ms)}</span>
+              <p>{card.hint.answer_hint}</p>
+            </div>
+          )}
+          {segs.slice(card ? -2 : -4).map((s) => (
+            <p key={s.id} className="flip-line"><b style={{ color: s.channel === 'me' ? 'var(--me)' : 'var(--them)' }}>{speaker(s.channel)}</b> {s.text}</p>
+          ))}
+          {!segs.length && !card && <p className="flip-line">{t('Waiting for speech…')}</p>}
+        </div>
+      </div>
     </div>
   );
 }

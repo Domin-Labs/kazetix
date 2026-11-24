@@ -13,12 +13,13 @@ export const Brand = () => (
 );
 
 /** Corner-key glyphs, drawn at key size (the painted keys are ~44px). */
-export const KeyIcon = ({ kind }: { kind: 'pin' | 'min' | 'close' | 'expand' }) => (
+export const KeyIcon = ({ kind }: { kind: 'pin' | 'min' | 'close' | 'expand' | 'flip' }) => (
   <svg className="keyicon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     {kind === 'pin' && <><path d="M6 2.5h4l-.6 3.8L12 8.5v1H4v-1l2.6-2.2z" /><path d="M8 9.5v4" /></>}
     {kind === 'min' && <path d="M3.5 8h9" />}
     {kind === 'close' && <path d="M4 4l8 8M12 4l-8 8" />}
     {kind === 'expand' && <path d="M4 6l4 4 4-4" />}
+    {kind === 'flip' && <><rect x="2.5" y="2.5" width="11" height="4" rx="1" /><path d="M4 9.5h8l-1 4H5z" /></>}
   </svg>
 );
 
