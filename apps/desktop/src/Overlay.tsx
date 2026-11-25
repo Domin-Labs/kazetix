@@ -426,6 +426,7 @@ export default function Overlay() {
       </div>
       <span className="hw hw-live" aria-hidden="true"><span className={`lamp ${sttDown ? 'amber' : 'on'}`} /></span>
       <button className="hw key hw-end" onClick={() => api.stop()}>{t('End')}</button>
+      <span className="resize-grip" title={t('Drag to resize')} aria-hidden="true" onMouseDown={(e) => { if (e.button === 0) { e.preventDefault(); win.startResizeDragging('SouthEast'); } }} />
     </div>
   );
 }

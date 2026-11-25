@@ -128,6 +128,6 @@ class Size { constructor(public width: number, public height: number) {} }
 export const LogicalSize = Size;
 export const LogicalPosition = Size;
 const noop = async () => {};
-export const getCurrentWindow = () => ({ label: W, setSize: noop, setPosition: noop, hide: noop, setAlwaysOnTop: noop, isVisible: async () => true, scaleFactor: async () => 1, onMoved: async () => () => {} });
+export const getCurrentWindow = () => ({ label: W, setSize: noop, setPosition: noop, hide: noop, setAlwaysOnTop: noop, isVisible: async () => true, startResizeDragging: noop, scaleFactor: async () => 1, onMoved: async () => () => {} });
 export const currentMonitor = async () => null;
 export const primaryMonitor = async () => null;
