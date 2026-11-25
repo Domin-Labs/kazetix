@@ -99,6 +99,7 @@ const handlers: Record<string, (a: any) => unknown> = {
   session_snapshot: () => (W === 'overlay' && S === 'idle' ? { active: false } : session), save_hint: () => null, monitor_levels: () => null, shortcut_errors: () => [],
   toast_state: () => (S === 'start' || S === 'auto' ? { kind: 'start', title: session.title, platform: 'teams', ...(S === 'auto' ? { auto: true, mic_app: 'Microsoft Teams', countdown_s: 10 } : {}) } : { kind: 'processing', meeting_id: 'demo', title: session.title, platform: 'teams', duration_s: 2460, upload: true, segments }),
   home_overview: homeOverview,
+  meeting_transcript: () => lines.map(([c, s, text]) => `[${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}] ${c === 'me' ? 'Me' : 'Others'}: ${text}`).join('\n'),
   meeting_status: () => meeting(S === 'done' ? 'done' : 'transcribing'),
 };
 export async function invoke(cmd: string, args?: unknown) {

@@ -35,6 +35,7 @@ function Stat({ n, label }: { n: string; label: string }) {
 
 function Call({ m }: { m: MeetingView }) {
   const [open, setOpen] = useState(false);
+  const [fb, setFb] = useState('');
   const key = m.summary?.key_points ?? [];
   const items = m.action_items ?? [];
   const lamp = m.status === 'done' ? 'on' : m.status === 'error' ? 'red' : 'amber';
@@ -58,6 +59,7 @@ function Call({ m }: { m: MeetingView }) {
           <div className="home-actions">
             {key.length > 0 && <button className="btn" onClick={() => void copy(m.summary?.markdown || key.map((k) => `- ${k}`).join('\n'))}>{t('Copy summary')}</button>}
             {items.length > 0 && <button className="btn" onClick={() => void copy(items.map((a) => `- [${a.done ? 'x' : ' '}] ${a.text}${a.owner ? ` (${a.owner})` : ''}`).join('\n'))}>{t('Copy action items')}</button>}
+            {m.status !== 'error' && <button className="btn" onClick={() => api.meetingTranscript(m.id).then(copy).then(() => 'Copied', (e) => String(e)).then((r) => { setFb(r); setTimeout(() => setFb(''), 2500); })}>{fb ? (fb === 'Copied' ? t('Copied') : fb) : t('Copy transcript')}</button>}
           </div>
         </div>
       )}

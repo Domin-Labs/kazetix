@@ -108,6 +108,11 @@ try {
   assert.match(live.live.transcript, /\[00:01\] Others: Zvládnete/);
   assert.equal((await tool('read_transcript', { meeting_id: id })).source, 'live');
 
+  const trn = await call('GET', `/api/meetings/${id}/transcript`);
+  assert.match(trn.body.text, /^\[00:01\] Others: Zvládnete/m);
+  assert.equal((await call('GET', '/api/meetings/nope/transcript')).status, 404);
+  assert.equal((await call('GET', `/api/meetings/${id}/transcript`, undefined, {})).status, 401);
+
   // --- resumable upload
   // a real 16 kHz stereo WAV (ffmpeg on the server must decode it)
   const pcm = Buffer.alloc(299_956);

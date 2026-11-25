@@ -128,6 +128,11 @@ export function transcriptRows(db: DB, id: string): { source: 'final' | 'live'; 
   return { source: 'live', rows: live.map((r) => ({ speaker: channelLabel(r.channel), start_ms: r.start_ms, end_ms: r.end_ms, text: r.text })) };
 }
 
+/** "[mm:ss] Speaker: text" lines, same format as the MCP read_transcript tool. */
+export function transcriptText(db: DB, id: string): string {
+  return transcriptRows(db, id).rows.map((r) => `[${mmss(r.start_ms)}] ${r.speaker}: ${r.text}`).join('\n');
+}
+
 export const channelLabel = (c: string) => (c === 'me' ? 'Me' : c === 'them' ? 'Others' : 'Speaker');
 
 export function mmss(ms: number) {

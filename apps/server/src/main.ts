@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import type { Server } from 'node:http';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import { MeetingCreate, SegmentBatch, HintIn, MarkIn, Finish } from '@kazetix/shared';
-import { openDb, getMeeting, meetingView, homeOverview, now, setStatus, tx, channelLabel, type DB } from './db.ts';
+import { openDb, getMeeting, meetingView, transcriptText, homeOverview, now, setStatus, tx, channelLabel, type DB } from './db.ts';
 import { startWorker, enqueue } from './worker.ts';
 import { mountMcp } from './mcp.ts';
 
@@ -90,6 +90,12 @@ export function createApp(db: DB, cfg: Config) {
     const v = meetingView(db, String(req.params.id));
     if (!v) return res.status(404).json({ error: 'meeting not found' });
     res.json(v);
+  });
+
+  api.get('/meetings/:id/transcript', (req, res) => {
+    const id = String(req.params.id);
+    if (!getMeeting(db, id)) return res.status(404).json({ error: 'meeting not found' });
+    res.json({ text: transcriptText(db, id) });
   });
 
   api.post('/meetings/:id/segments', express.json({ limit: '5mb' }), (req, res) => {

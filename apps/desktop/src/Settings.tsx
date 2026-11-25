@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { api, copy, getPlastic, setPlastic, setPrepSlot, t, updateSettings, useEvent, usePrepSlot, useSettings, type Plastic, type Settings } from './lib';
+import { api, copy, getPlastic, setPlastic, t, updateSettings, useEvent, useSettings, type Plastic, type Settings } from './lib';
 import { Meter } from './Overlay';
-import { Brand, PrepBox } from './Prep';
+import { Brand } from './Prep';
 import Home from './Home';
 
 type Page = 'home' | 'general' | 'audio' | 'server' | 'shortcuts';
@@ -59,7 +59,6 @@ export default function SettingsWindow() {
 function General({ s }: { s: Settings }) {
   const [log, setLog] = useState('');
   const [plastic, setP] = useState<Plastic>(getPlastic());
-  const prep = usePrepSlot();
   useEffect(() => void api.logPath().then(setLog), []);
   return (
     <>
@@ -97,10 +96,6 @@ function General({ s }: { s: Settings }) {
             <button key={p} className="option" aria-pressed={plastic === p} onClick={() => (setPlastic(p), setP(p))}><b>{t(p === 'beige' ? 'Beige' : p === 'black' ? 'Black' : 'System')}</b></button>
           ))}
         </div>
-      </div>
-      <div className="section">
-        <span className="label">{t('Prep for the next call')}</span>
-        <PrepBox prep={prep} onChange={setPrepSlot} hint={prep ? t('Used when the next call starts.') : t('Drop or paste a .md file or text made in Claude or ChatGPT. Kazetix follows it during the call and tells you what has not come up yet.')} />
       </div>
       <div className="section">
         <span className="label">{t('Overlay when a call starts')}</span>

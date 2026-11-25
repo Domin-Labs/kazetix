@@ -502,6 +502,17 @@ async fn meeting_status(st: S<'_>, id: String) -> Result<Value, String> {
     st.server.get(&format!("/api/meetings/{id}")).await.map_err(|e| e.to_string())
 }
 
+/// Full transcript as "[mm:ss] Speaker: text" lines: local archive first, else the server's `GET /api/meetings/:id/transcript`.
+#[tauri::command]
+async fn meeting_transcript(st: S<'_>, id: String) -> Result<String, String> {
+    if let Some(_) = store::get_meeting(&st.db.lock().unwrap(), &id).map_err(|e| e.to_string())? {
+        let (_, rows) = store::transcript_rows(&st.db.lock().unwrap(), &id).map_err(|e| e.to_string())?;
+        return Ok(transcript::transcript_text(&rows.into_iter().map(|r| (r.speaker, r.start_ms, r.text)).collect::<Vec<_>>()));
+    }
+    let v = st.server.get(&format!("/api/meetings/{id}/transcript")).await.map_err(|e| e.to_string())?;
+    Ok(v["text"].as_str().unwrap_or_default().to_string())
+}
+
 /// Home page of the settings window: local archive, or the server's `GET /api/meetings` in server mode (offline: empty + `error`).
 #[tauri::command]
 async fn home_overview(st: S<'_>) -> Result<Value, String> {
@@ -896,6 +907,7 @@ pub fn run() {
             save_hint,
             add_mark,
             meeting_status,
+            meeting_transcript,
             home_overview,
             monitor_levels,
             toast_state,
