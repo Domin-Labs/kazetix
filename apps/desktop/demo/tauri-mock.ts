@@ -131,3 +131,6 @@ const noop = async () => {};
 export const getCurrentWindow = () => ({ label: W, setSize: noop, setPosition: noop, hide: noop, setAlwaysOnTop: noop, isVisible: async () => true, startResizeDragging: noop, scaleFactor: async () => 1, onMoved: async () => () => {} });
 export const currentMonitor = async () => null;
 export const primaryMonitor = async () => null;
+
+// ?flip=1 opens the capsule's flip-out display (README screenshot)
+if (q.get('flip') === '1') setTimeout(() => (document.querySelector('.cap-key.icon') as HTMLElement | null)?.click(), 1500);

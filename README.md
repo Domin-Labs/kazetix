@@ -1,4 +1,9 @@
-<p align="center"><img src="docs/images/logo-ink.webp" alt="Kazetix" width="360"></p>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo-cream.webp">
+    <img src="docs/images/logo-ink.webp" alt="Kazetix" width="360">
+  </picture>
+</p>
 
 <p align="center"><b>Live call transcripts, in-call hints and notes after the call — a 1980s answering machine for Teams, Meet and Zoom.<br>Local by default, optionally self-hosted, with MCP for Claude.</b></p>
 
@@ -14,8 +19,9 @@ or on a server you run, and Claude can read it over MCP. All AI goes through one
 - **In-call hints.** Suggested answers and an ask-next list while the call is running, plus a chat for questions about it.
 - **Prep notes.** Attach a `.md` file prepared in Claude or ChatGPT; Kazetix uses it for hints and keeps a checklist of what you planned to cover.
 - **Automatic call detection.** Offers to record when a call app starts using the microphone, with an optional countdown.
-- **Capsule mode.** Collapse the overlay to a small capsule while you talk.
+- **Capsule mode.** Collapse the overlay to a slim strip while you talk; flip out its display to keep the latest lines and hints in view.
 - **Notes after the call.** Exact transcript, summary and action items once the call ends.
+- **Home overview.** Calls, hours, words and open action items, five weeks of activity and recent calls with their notes.
 - **Built-in archive + MCP.** Search past calls locally and connect Claude Desktop or Claude Code to them.
 - **Optional self-hosted server.** Docker or plain Node; exact transcript, summaries and an MCP endpoint for claude.ai.
 - **Beige or black housing**, Czech and English UI.
@@ -24,11 +30,22 @@ The overlay is excluded from screen capture, and a local stereo Ogg/Opus backup 
 
 ## A quick tour
 
-| | |
-|---|---|
-| <img src="docs/images/overlay-assist-en-black.webp" width="300" alt="Assist tab with hints and chat"><br>Hints and chat in one Assist tab | <img src="docs/images/capsule-en-beige.webp" width="300" alt="Capsule mode"><br>Capsule mode |
-| <img src="docs/images/toast-auto-en-beige.webp" width="300" alt="Call detected toast"><br>A call is detected | <img src="docs/images/toast-done-en-black.webp" width="300" alt="Notes ready toast"><br>Notes are ready |
-| <img src="docs/images/settings-en-beige.webp" width="300" alt="Settings"><br>Settings | |
+<table>
+  <tr>
+    <td align="center" valign="top" width="33%"><img src="docs/images/overlay-assist-en-black.webp" width="240" alt="Assist tab with a suggested answer, questions to ask and chat"><br><sub>Hints and chat in one Assist tab</sub></td>
+    <td align="center" valign="top" width="33%"><img src="docs/images/toast-auto-en-beige.webp" width="240" alt="A call is detected: title, prep and a REC countdown on the display"><br><sub>A call is detected</sub></td>
+    <td align="center" valign="top" width="33%"><img src="docs/images/toast-done-en-black.webp" width="240" alt="Notes are ready: summary key points and copy keys"><br><sub>Notes are ready</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" colspan="3"><img src="docs/images/capsule-en-beige.webp" width="440" alt="Capsule mode: tape counter, level meters, Assist and End"><br><sub>Capsule mode: the machine seen from the top</sub><br><br><img src="docs/images/capsule-flip-en-beige.webp" width="440" alt="Capsule with the display flipped out, showing the suggested answer and the latest lines"><br><sub>…with the display flipped out</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" colspan="3"><img src="docs/images/home-en-black.webp" width="640" alt="Home: calls this month, hours, words, open action items, activity, platforms and recent calls"><br><sub>Home: every call at a glance</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" colspan="3"><img src="docs/images/settings-en-beige.webp" width="640" alt="Settings in the beige housing"><br><sub>Settings, in the beige housing</sub></td>
+  </tr>
+</table>
 
 ## Install
 
