@@ -1,6 +1,6 @@
 [package]
 name = "kazetix"
-version = "1.0.4"
+version = "1.0.5"
 description = "Live call transcription, hints and AI chat"
 edition = "2021"
 license = "FSL-1.1-ALv2"

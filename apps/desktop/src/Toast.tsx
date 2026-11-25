@@ -11,13 +11,19 @@ type ToastState =
   | { kind: 'processing'; meeting_id: string; title: string; platform: string | null; duration_s: number; upload: boolean; local?: boolean; segments: Segment[] }
   | { kind?: undefined };
 
-const W = 440; // the same device as the overlay
+// The toast is the overlay's machine: same width (remembered from resizing either window), drawn at 440 and scaled.
+const BASE_W = 440;
+const devW = () => Math.min(660, Math.max(300, Number(localStorage.getItem('kazetix.overlay.w')) || BASE_W));
+let placing = false;
 
-/** Size the window to its content and dock it bottom-right above the taskbar. */
-async function fit(el: HTMLElement) {
-  const h = Math.ceil(el.getBoundingClientRect().height);
+/** Size the window to the machine (2:3) at the remembered width and dock it bottom-right above the taskbar. */
+async function fit() {
+  const W = devW();
+  const h = Math.round(W * 1.5);
+  document.documentElement.style.zoom = String(W / BASE_W);
   const mon = (await currentMonitor()) ?? (await primaryMonitor());
-  if (!mon || h < 20) return;
+  if (!mon) return;
+  placing = true;
   const k = mon.scaleFactor;
   const area = (mon as { workArea?: { position: { x: number; y: number }; size: { width: number; height: number } } }).workArea ?? {
     position: mon.position,
@@ -25,6 +31,7 @@ async function fit(el: HTMLElement) {
   };
   await win.setSize(new LogicalSize(W, h));
   await win.setPosition(new LogicalPosition(Math.round((area.position.x + area.size.width) / k - W - 16), Math.round((area.position.y + area.size.height) / k - h - 16)));
+  setTimeout(() => (placing = false), 300);
 }
 
 export default function Toast() {
@@ -37,9 +44,20 @@ export default function Toast() {
   useEvent<ToastState>('toast', (e) => setSt(e.payload));
   useLayoutEffect(() => {
     if (!ref.current) return;
-    const ro = new ResizeObserver(() => ref.current && fit(ref.current));
-    ro.observe(ref.current);
-    return () => ro.disconnect();
+    fit();
+    // a drag on the corner grip resizes the window: keep 2:3, remember the width for both windows
+    let t0: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      if (placing) return;
+      document.documentElement.style.zoom = String(innerWidth / BASE_W);
+      clearTimeout(t0);
+      t0 = setTimeout(() => {
+        localStorage.setItem('kazetix.overlay.w', String(Math.min(660, Math.max(300, Math.round(innerWidth)))));
+        fit();
+      }, 250);
+    };
+    addEventListener('resize', onResize);
+    return () => (clearTimeout(t0), removeEventListener('resize', onResize));
   }, []);
   return (
     <div ref={ref} className="toast" onKeyDown={(e) => e.key === 'Escape' && win.hide()}>
@@ -60,6 +78,7 @@ function Device(p: { counter: number; tag: string; title: string; sub: string; l
       {p.keys[1]}
       <div className="hw hw-lcd lcd"><div className="scroll toast-lcd"><h2>{p.title}</h2><p className="sub">{p.lamp === 'amber' && <span className="lamp amber" />}{p.sub}</p>{p.children}</div></div>
       <button className={`hw key hw-end ${p.rec ? 'rec' : 'plain'}`} onClick={p.onRed}>{p.red}</button>
+      <span className="resize-grip" title={t('Drag to resize')} aria-hidden="true" onMouseDown={(e) => { if (e.button === 0) { e.preventDefault(); win.startResizeDragging('SouthEast'); } }} />
     </div>
   );
 }
