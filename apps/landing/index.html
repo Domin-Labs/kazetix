@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kazetix — every call, on tape</title>
+  <meta name="description" content="Kazetix transcribes your calls live, suggests an answer when someone asks you a question and hands you exact notes when you hang up. Free, with source on GitHub, on your own server." />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="canonical" href="https://kazetix.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kazetix.com/" />
+  <meta property="og:title" content="Kazetix — every call, on tape" />
+  <meta property="og:description" content="Live transcript, an answer when someone puts you on the spot, and notes minutes after you hang up. Free for Windows." />
+  <meta property="og:image" content="https://kazetix.com/assets/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Kazetix: a retro call recorder showing a live call transcript, with the headline Every call, on tape." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/favicon-48.png" type="image/png" sizes="48x48" />
+  <link rel="apple-touch-icon" href="assets/icon-180.png" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    // set the housing before first paint, so a black-plastic visitor never sees a beige flash
+    document.documentElement.dataset.plastic = localStorage.getItem('kazetix.plastic') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'black' : 'beige');
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main" data-i18n="aria.skip">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="#main"><img class="logo ink" src="assets/logo-ink.webp" alt="Kazetix" width="720" height="78" /><img class="logo cream" src="assets/logo-cream.webp" alt="Kazetix" width="720" height="78" /></a>
+    <nav aria-label="Main">
+      <a href="#features" data-i18n="nav.features">Features</a>
+      <a href="#how" data-i18n="nav.how">How it works</a>
+      <a href="#plans" data-i18n="nav.plans">Plans</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="toggles">
+      <span class="seg" role="group" aria-label="Language"><button type="button" data-lang="cs">CZ</button><button type="button" data-lang="en">EN</button></span>
+      <button class="theme" type="button" data-theme-toggle aria-label="Switch to black plastic" data-i18n-aria="aria.theme"><span class="sun"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7"/></svg></span><span class="moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span></button>
+    </div>
+    <a class="gh" href="https://github.com/Domin-Labs/kazetix" aria-label="Kazetix on GitHub">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+      <span>GitHub</span>
+      <span class="stars" data-stars hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.8 2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg><b></b></span>
+    </a>
+    <a class="btn-red small" href="https://github.com/Domin-Labs/kazetix/releases/latest/download/Kazetix-Setup-x64.exe"><svg class="winlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4.3l8.2-1.1v8H2zM11.2 3l10.8-1.5v9.7H11.2zM2 12.6h8.2v8L2 19.6zM11.2 12.6H22v9.9l-10.8-1.5z"/></svg><span data-i18n="cta.download">Download for Windows</span></a>
+  </header>
+
+  <main id="main">
+    <section class="hero-band" aria-labelledby="h1">
+     <div class="hero wrap">
+      <div class="pitch">
+        <h1 id="h1" data-i18n="hero.headline">Every call,<br />on tape.</h1>
+        <p class="lead" data-i18n="hero.lead">Kazetix listens to both sides of your call, suggests the answer when someone puts you on the spot, and has the notes ready a few minutes after you hang up.</p>
+        <div class="cta-row">
+          <a class="btn-red big" href="https://github.com/Domin-Labs/kazetix/releases/latest/download/Kazetix-Setup-x64.exe"><svg class="winlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4.3l8.2-1.1v8H2zM11.2 3l10.8-1.5v9.7H11.2zM2 12.6h8.2v8L2 19.6zM11.2 12.6H22v9.9l-10.8-1.5z"/></svg><span data-i18n="cta.download">Download for Windows</span></a>
+          <a class="btn-line big" href="#install" data-i18n="cta.prompt">Set up with one prompt</a>
+        </div>
+        <p class="works"><span data-i18n="works.label">Works with</span><svg class="brand zoom" viewBox="0 9.2 24 5.6" role="img" aria-label="Zoom"><path d="M5.033 14.649H.743a.74.74 0 0 1-.686-.458.74.74 0 0 1 .16-.808L3.19 10.41H1.06A1.06 1.06 0 0 1 0 9.35h3.957c.301 0 .57.18.686.458a.74.74 0 0 1-.161.808L1.51 13.59h2.464c.585 0 1.06.475 1.06 1.06zM24 11.338c0-1.14-.927-2.066-2.066-2.066-.61 0-1.158.265-1.537.686a2.061 2.061 0 0 0-1.536-.686c-1.14 0-2.066.926-2.066 2.066v3.311a1.06 1.06 0 0 0 1.06-1.06v-2.251a1.004 1.004 0 0 1 2.013 0v2.251c0 .586.474 1.06 1.06 1.06v-3.311a1.004 1.004 0 0 1 2.012 0v2.251c0 .586.475 1.06 1.06 1.06zM16.265 12a2.728 2.728 0 1 1-5.457 0 2.728 2.728 0 0 1 5.457 0zm-1.06 0a1.669 1.669 0 1 0-3.338 0 1.669 1.669 0 0 0 3.338 0zm-4.82 0a2.728 2.728 0 1 1-5.458 0 2.728 2.728 0 0 1 5.457 0zm-1.06 0a1.669 1.669 0 1 0-3.338 0 1.669 1.669 0 0 0 3.338 0z"/></svg><svg class="brand" viewBox="0 0 24 24" role="img" aria-label="Google Meet"><path d="M5.53 2.13 0 7.75h5.53zm.398 0v5.62h7.608v3.65l5.47-4.45c-.014-1.22.031-2.25-.025-3.46-.148-1.09-1.287-1.47-2.236-1.36zM23.1 4.32c-.802.295-1.358.995-2.047 1.49-2.506 2.05-4.982 4.12-7.468 6.19 3.025 2.59 6.04 5.18 9.065 7.76 1.218.671 1.428-.814 1.328-1.64v-13a.828.828 0 0 0-.877-.825zM.038 8.15v7.7h5.53v-7.7zm13.577 8.1H6.008v5.62c3.864-.006 7.737.011 11.58-.009 1.02-.07 1.618-1.12 1.468-2.07v-2.51l-5.47-4.68v3.65zm-13.577 0c.02 1.44-.041 2.88.033 4.31.162.948 1.158 1.43 2.047 1.31h3.464v-5.62z"/></svg><b class="brand-word">Microsoft Teams</b><span data-i18n="works.more">and any app that uses your microphone</span></p>
+        <ul class="trust">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 7 4 12l4.5 5M15.5 7 20 12l-4.5 5M13.5 5l-3 14"/></svg><span data-i18n="trust.free">Free, source on GitHub</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="9" width="14" height="10" rx="2.5"/><path d="M12 5.5V9M9.5 13.5h.01M14.5 13.5h.01"/><circle cx="12" cy="4.5" r="1"/><path d="M3 3l18 18"/></svg><span data-i18n="trust.nobot">No bot in your meeting</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="7" rx="1.6"/><rect x="3.5" y="13" width="17" height="7" rx="1.6"/><path d="M7.5 7.5h.01M7.5 16.5h.01M12 7.5h5M12 16.5h5"/></svg><span data-i18n="trust.server">Your archive stays on your PC</span></li>
+        </ul>
+      </div>
+
+      <figure class="product">
+        <div class="shot">
+          <img id="hero-shot" src="shots/overlay-transcript-en-beige.webp" alt="Kazetix overlay during a call: live transcript with Me and Others, tape counter and End key" width="868" height="1309" fetchpriority="high" />
+          <div class="hotkeys" role="group" aria-label="Screen" data-i18n-aria="aria.screen"><button type="button" class="hk1" data-view="transcript"><span class="sr" data-i18n="view.transcript">Transcript</span></button><button type="button" class="hk2" data-view="assist"><span class="sr" data-i18n="view.assist">Assist</span></button></div>
+          <ol class="callouts">
+            <li class="c1"><i>01</i><span data-i18n="hero.c1">Both sides, live</span></li>
+            <li class="c2"><i>02</i><span data-i18n="hero.c2">An answer when they ask</span></li>
+            <li class="c3"><i>03</i><span data-i18n="hero.c3">Hidden from screen sharing</span></li>
+            <li class="c4"><i>04</i><span data-i18n="hero.c4">Hit stop, the notes write themselves</span></li>
+          </ol>
+        </div>
+      </figure>
+     </div>
+    </section>
+
+    <section class="specs wrap" aria-label="Specifications" data-i18n-aria="aria.specs">
+      <p class="plate-head"><span>KZ-01</span><span data-i18n="spec.head">Technical data</span></p>
+      <table class="spec">
+        <tr><th data-i18n="spec.channels">Channels</th><td data-i18n="spec.channelsV">2 · Me + Others, kept apart</td></tr>
+        <tr><th data-i18n="spec.live">Live text</th><td data-i18n="spec.liveV">1–3 s after each sentence</td></tr>
+        <tr><th data-i18n="spec.prep">Prep</th><td data-i18n="spec.prepV">.md file or text from Claude or ChatGPT</td></tr>
+        <tr><th data-i18n="spec.start">Call start</th><td data-i18n="spec.startV">Noticed automatically</td></tr>
+        <tr><th data-i18n="spec.server">Storage</th><td data-i18n="spec.serverV">On your PC, or your own server</td></tr>
+        <tr><th data-i18n="spec.archive">Claude</th><td data-i18n="spec.archiveV">Built-in MCP for Claude Desktop and Code</td></tr>
+      </table>
+    </section>
+
+    <section class="features wrap" id="features" aria-labelledby="f-title">
+      <h2 class="section-title" id="f-title" data-i18n="f.title">From the first ring to the last action item</h2>
+      <div class="catalog">
+        <h3 class="group" data-i18n="group.before">Before the call</h3>
+        <article class="item">
+          <div class="media"><img class="pic" data-shot="toast-auto" src="shots/toast-auto-en-beige.webp" alt="Call started in Microsoft Teams, shown on the Kazetix display: Teams is using the microphone, title, prep, REC 8" width="869" height="1306" loading="lazy" /></div>
+          <div>
+            <p class="item-no">KZ-02</p>
+            <h3 data-i18n="kz06.title">It notices the call before you do</h3>
+            <p data-i18n="kz06.copy">The moment Teams, Zoom or your browser takes the microphone, Kazetix offers to record, with the meeting name already filled in. Answer with one key, or let it start on its own after a few seconds.</p>
+            <ul class="ticks">
+              <li data-i18n="kz06.t1">Works with any call app that uses the microphone</li>
+              <li data-i18n="kz06.t2">Title taken from the Teams, Meet or Zoom window</li>
+              <li data-i18n="kz06.t3">Ask every time, or auto-start after 5, 10 or 20 s</li>
+            </ul>
+          </div>
+        </article>
+        <article class="item flip prep-item">
+          <div class="media deck" aria-hidden="true" title="Insert the prep cassette again" data-i18n-title="kz04.replay">
+            <img class="cassette" src="assets/cassette.webp" alt="" width="900" height="519" loading="lazy" />
+            <div class="deck-face"><div class="deck-flat"><span class="deck-mouth"></span><span class="deck-flap">Insert<svg viewBox="0 0 8 8"><path d="M1 0.5l6 3.5-6 3.5z" /></svg></span></div></div>
+          </div>
+          <div>
+            <p class="item-no">KZ-03</p>
+            <h3 data-i18n="kz03.title">Load your prep like a cassette</h3>
+            <p data-i18n="kz03.copy">Prep in Claude or ChatGPT, then drop in the .md file or just paste the text. During the call Kazetix answers from it and ticks off every point you meant to cover, so nothing important stays unsaid.</p>
+            <ul class="checks" aria-label="Example checklist">
+              <li data-i18n="kz03.c1">Budget discussed</li>
+              <li data-i18n="kz03.c2">Deadline: Friday</li>
+              <li data-i18n="kz03.c3">Confirm next steps</li>
+            </ul>
+          </div>
+        </article>
+        <h3 class="group" data-i18n="group.during">During the call</h3>
+        <article class="item">
+          <div class="media"><img class="pic" data-shot="overlay-assist" src="shots/overlay-assist-en-beige.webp" alt="Assist tab: the question asked, a suggested answer, questions to ask next and the prep checklist" width="868" height="1309" loading="lazy" /></div>
+          <div>
+            <p class="item-no">KZ-04</p>
+            <h3 data-i18n="kz02.title">An answer while they’re still asking</h3>
+            <p data-i18n="kz02.copy">When the others ask you something, Kazetix shows a short suggested answer built from what was said and from your prep. Next to it: the questions worth asking now, and a chat about the whole call.</p>
+            <ul class="ticks">
+              <li data-i18n="kz02.t1">Suggested answer to the last question</li>
+              <li data-i18n="kz02.t2">Up to three questions to ask next</li>
+              <li data-i18n="kz02.t3">“Make me sound smart”, recap and fact-check in one click</li>
+            </ul>
+          </div>
+        </article>
+        <article class="item flip">
+          <div class="media"><img class="pic capsule" data-shot="capsule" src="shots/capsule-en-beige.webp" alt="Capsule: the side of the machine with tape counter, level meters, Assist and End" width="880" height="192" loading="lazy" /></div>
+          <div>
+          <p class="item-no">KZ-05</p>
+          <h3 data-i18n="kz05.title">A small presence. Full attention.</h3>
+          <p data-i18n="kz05.copy">Collapse the overlay into a strip at the top of the screen. When someone asks you a question, the suggested answer slides out under it, then gets out of the way.</p>
+          </div>
+        </article>
+        <h3 class="group" data-i18n="group.after">After the call</h3>
+        <article class="item">
+          <div class="media"><img class="pic" data-shot="toast-done" src="shots/toast-done-en-beige.webp" alt="Notes are ready: key points, saved on the server, copy summary and action items" width="869" height="1306" loading="lazy" /></div>
+          <div>
+          <p class="item-no">KZ-06</p>
+          <h3 data-i18n="kz04.title">Notes done before your next meeting</h3>
+          <p data-i18n="kz04.copy">When you hang up, Kazetix makes an exact transcript with speakers, a summary and action items, right on your PC (or on your own server), ready to paste anywhere.</p>
+          </div>
+        </article>
+        <article class="item flip home-item">
+          <div class="media"><img class="pic home" data-shot="home" src="shots/home-en-beige.webp" alt="Home overview: calls this month, hours recorded, words transcribed, open action items, a five-week activity grid, calls by platform and recent calls" width="1800" height="1320" loading="lazy" /></div>
+          <div>
+            <p class="item-no">KZ-07</p>
+            <h3 data-i18n="kzh.title">Every call at a glance</h3>
+            <p data-i18n="kzh.copy">Open Kazetix and your archive is right there: how much you talked this month, what is still open, and every recent call with its summary and action items, one click from your clipboard.</p>
+            <ul class="ticks">
+              <li data-i18n="kzh.t1">Calls, hours, words and open action items on one display</li>
+              <li data-i18n="kzh.t2">Five weeks of activity and your top call apps</li>
+              <li data-i18n="kzh.t3">Recent calls with summary and action items</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="how wrap" id="how" aria-labelledby="how-title">
+      <h2 class="section-title" id="how-title" data-i18n="how.title">Four steps, then it just runs</h2>
+      <ol class="steps">
+        <li><b data-i18n="how.s1">Install</b><span data-i18n="how.s1c">Download the app, or paste one prompt into Claude or ChatGPT and let it set everything up.</span></li>
+        <li><b data-i18n="how.s2">Prepare</b><span data-i18n="how.s2c">Optional: drop in your prep notes from Claude or ChatGPT before the call.</span></li>
+        <li><b data-i18n="how.s3">Call like you always do</b><span data-i18n="how.s3c">Join from any app. Kazetix notices the call, records it and helps right beside it.</span></li>
+        <li><b data-i18n="how.s4">Ask Claude later</b><span data-i18n="how.s4c">Every call lands in your archive. Ask Claude what was agreed, who owes what, and by when.</span></li>
+      </ol>
+    </section>
+
+    <section class="serverside wrap" id="self-host" aria-labelledby="sh-title">
+      <h2 class="section-title" id="sh-title" data-i18n="sh.title">Your calls stay yours</h2>
+      <p class="section-lead" data-i18n="sh.lead">Your recordings, transcripts and notes live on your PC, and Claude reads them through the built-in MCP. Audio goes only to the transcription model, through your own OpenRouter key. No bot in the meeting, and the overlay never shows up when you share your screen.</p>
+      <div class="cols">
+        <div class="box">
+          <h3 data-i18n="sh.local">Built in, on your PC</h3>
+          <p data-i18n="sh.localCopy">The default. Recordings, transcripts, summaries and action items are stored on your computer. Nothing to install besides the app.</p>
+        </div>
+        <div class="box" id="mcp">
+          <h3 data-i18n="sh.mcp">Claude in one click</h3>
+          <p data-i18n="sh.mcpCopy">Settings → Connect Claude adds Kazetix to Claude Desktop. Claude Code takes one command:</p>
+          <pre><code>claude mcp add kazetix -- Kazetix.exe --mcp</code></pre>
+        </div>
+        <div class="box">
+          <h3 data-i18n="sh.docker">Your own server, optional</h3>
+          <p data-i18n="sh.dockerCopy">For teams and claude.ai on the web: run the Kazetix server from our GitHub repo in Docker behind your HTTPS and point the app at it.</p>
+          <pre><code>docker compose -f docker/docker-compose.yml up -d</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="plans wrap" id="plans" aria-labelledby="plans-title">
+      <h2 class="section-title" id="plans-title" data-i18n="plans.title">Free today. Even simpler soon.</h2>
+      <div class="plan-grid">
+        <article class="plan">
+          <p class="item-no" data-i18n="plans.freeTag">Available now</p>
+          <h3 data-i18n="plans.free">Free, source available</h3>
+          <p class="plan-price" data-i18n="plans.freePrice">Free · bring your own keys</p>
+          <ul class="ticks">
+            <li data-i18n="plans.f1">Everything in this catalog, on Windows 10 and 11</li>
+            <li data-i18n="plans.f2">Archive and MCP built into the app, or your own server</li>
+            <li data-i18n="plans.f3">You pay OpenRouter directly for what you use</li>
+          </ul>
+          <a class="btn-red big" href="https://github.com/Domin-Labs/kazetix/releases/latest/download/Kazetix-Setup-x64.exe"><svg class="winlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4.3l8.2-1.1v8H2zM11.2 3l10.8-1.5v9.7H11.2zM2 12.6h8.2v8L2 19.6zM11.2 12.6H22v9.9l-10.8-1.5z"/></svg><span data-i18n="cta.download">Download for Windows</span></a>
+        </article>
+        <article class="plan soon">
+          <p class="item-no" data-i18n="plans.cloudTag">In preparation</p>
+          <h3>Kazetix Cloud</h3>
+          <p class="plan-price" data-i18n="plans.cloudPrice">Sign in · subscription</p>
+          <ul class="ticks">
+            <li data-i18n="plans.c1">No keys to manage: sign in and record</li>
+            <li data-i18n="plans.c2">Transcripts, summaries and statistics on the web</li>
+            <li data-i18n="plans.c3">Connect Claude over MCP from a settings page</li>
+          </ul>
+          <a class="btn-line big" href="#waitlist" data-i18n="plans.join">Join the waitlist</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="waitlist wrap" id="waitlist" aria-labelledby="wl-title">
+      <div class="wl-box">
+        <div>
+          <h2 class="section-title" id="wl-title" data-i18n="wl.title">Be first on Mac and Cloud</h2>
+          <p class="section-lead" data-i18n="wl.lead">Kazetix Cloud (sign in, no keys) and the Mac version are on their way. Leave your email and we’ll write once, when your pick is ready.</p>
+        </div>
+        <form class="wl-form" data-waitlist novalidate>
+          <label class="wl-field"><span data-i18n="wl.email">Email</span><input type="email" name="email" required autocomplete="email" placeholder="you@example.com" /></label>
+          <fieldset>
+            <legend data-i18n="wl.which">I want</legend>
+            <label class="check"><input type="checkbox" name="products" value="cloud" checked /><span>Kazetix Cloud</span></label>
+            <label class="check"><input type="checkbox" name="products" value="mac" /><span data-i18n="wl.mac">The Mac version</span></label>
+          </fieldset>
+          <label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          <button class="btn-red big" type="submit" data-i18n="wl.submit">Join the waitlist</button>
+          <p class="wl-status" role="status" aria-live="polite"></p>
+          <p class="wl-fine" data-i18n="wl.fine">We use your email only to tell you about these launches. Ask us and we delete it.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="faq wrap" id="faq" aria-labelledby="faq-title">
+      <h2 class="section-title" id="faq-title" data-i18n="faq.title">Before you ask</h2>
+      <details><summary data-i18n="faq.q1">What does it cost?</summary><p data-i18n="faq.a1">Kazetix is free. You pay only your own OpenRouter usage: live transcription is billed for detected speech, up to about $0.44 per hour with two channels; the exact transcript after the call adds $0.22 per hour per channel; hints, chat and summaries are ordinary LLM usage.</p></details>
+      <details><summary data-i18n="faq.q8">Is it open source?</summary><p data-i18n="faq.a8">The source is public on GitHub under the Functional Source License (FSL-1.1). You can use Kazetix for free, read and change the code and run it for yourself or your company. You may not sell it or offer it as a competing product. Two years after each release, that version becomes Apache 2.0, a regular open-source license.</p></details>
+      <details><summary data-i18n="faq.q2">Does a bot join my meeting?</summary><p data-i18n="faq.a2">No. Kazetix records your microphone and your computer’s audio on your own PC, so it works with any call app and nobody sees an extra participant.</p></details>
+      <details><summary data-i18n="faq.q3">Will the others see it when I share my screen?</summary><p data-i18n="faq.a3">No. The overlay and the notifications are excluded from screen capture.</p></details>
+      <details><summary data-i18n="faq.q4">Which languages?</summary><p data-i18n="faq.a4">Calls in Czech, Slovak, English, German, Polish, or auto-detect. The app speaks English and Czech.</p></details>
+      <details><summary data-i18n="faq.q7">Do I need a server?</summary><p data-i18n="faq.a7">No. The archive and the MCP connection for Claude are built into the app. A server is only for teams or for using claude.ai on the web.</p></details>
+      <details><summary data-i18n="faq.q5">Mac or Linux?</summary><p data-i18n="faq.a5">Windows 10 (version 2004 or newer) and Windows 11 today. The Mac version is in the works: join the waitlist and we’ll tell you when it’s ready.</p></details>
+      <details><summary data-i18n="faq.q6">Can I just sign in instead of using a key?</summary><p data-i18n="faq.a6">Soon. Kazetix Cloud, with sign-in and a subscription, is in preparation; join the waitlist. Today everything AI goes through one OpenRouter key that you control.</p></details>
+    </section>
+
+    <section class="install wrap" id="install" aria-labelledby="coupon-title">
+      <div class="coupon">
+        <span class="scissors" aria-hidden="true"></span>
+        <p class="item-no" data-i18n="coupon.form">Order form · KZ-01</p>
+        <h2 id="coupon-title" data-i18n="coupon.title">Install with one prompt</h2>
+        <p class="coupon-note" data-i18n="coupon.note">Paste it into Claude or ChatGPT. It walks you through installing the app, adding your OpenRouter key and connecting Claude, and asks before anything that needs your keys.</p>
+        <div class="prompt-row">
+          <p class="prompt" data-prompt></p>
+          <button class="copy" type="button" data-copy><span class="clip" aria-hidden="true"></span><span data-i18n="coupon.copy">Copy</span></button>
+        </div>
+        <div class="order">
+          <a class="btn-red big" href="https://github.com/Domin-Labs/kazetix/releases/latest/download/Kazetix-Setup-x64.exe"><svg class="winlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4.3l8.2-1.1v8H2zM11.2 3l10.8-1.5v9.7H11.2zM2 12.6h8.2v8L2 19.6zM11.2 12.6H22v9.9l-10.8-1.5z"/></svg><span data-i18n="cta.download">Download for Windows</span></a>
+          <p class="fine" data-i18n="coupon.fine">Free to use. Your PC. Your calls.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot wrap">
+    <span class="wordmark small"><img class="logo ink" src="assets/logo-ink.webp" alt="Kazetix" width="720" height="78" loading="lazy" /><img class="logo cream" src="assets/logo-cream.webp" alt="Kazetix" width="720" height="78" loading="lazy" /></span>
+    <a href="https://github.com/Domin-Labs/kazetix">GitHub</a>
+    <a href="https://github.com/Domin-Labs/kazetix/blob/main/INSTALL.md" data-i18n="foot.install">Install guide</a>
+    <a href="https://dominlabs.cz/" data-i18n="foot.by">A DominLabs product · dominlabs.cz</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

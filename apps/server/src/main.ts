@@ -29,6 +29,8 @@ export function loadConfig(env = process.env) {
     workerIntervalMs: Number(env.WORKER_INTERVAL_MS ?? 2000),
     // A channel whose whole-file STT times out upstream (long diarized calls) is re-sent in pieces of this many seconds.
     sttChunkS: Number(env.STT_CHUNK_S ?? 2400), // 47 min diarized passed whole, 95 min timed out
+    // Public waitlist form on the landing page (kazetix.com); empty = endpoint off.
+    waitlistOrigins: (env.WAITLIST_ORIGINS ?? '').split(',').map((o) => o.trim()).filter(Boolean),
   };
 }
 export type Config = ReturnType<typeof loadConfig>;
@@ -44,6 +46,38 @@ export function createApp(db: DB, cfg: Config) {
   app.get('/healthz', (_req, res) => res.json({ ok: true }));
 
   const { signer } = mountMcp(app, db, cfg);
+
+  // ---------------------------------------------------------------- public waitlist (Kazetix Cloud, Mac version)
+  // ponytail: in-memory per-IP limit, fine for one instance; a shared store if this ever runs on several.
+  const hits = new Map<string, number[]>();
+  const cors = (req: Request, res: Response) => {
+    const origin = String(req.headers.origin ?? '');
+    if (!cfg.waitlistOrigins.includes(origin)) return false;
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type');
+    return true;
+  };
+  app.options('/waitlist', (req, res) => (cors(req, res) ? res.sendStatus(204) : res.sendStatus(404)));
+  app.post('/waitlist', express.json({ limit: '2kb' }), (req, res) => {
+    if (!cfg.waitlistOrigins.length) return res.sendStatus(404);
+    if (!cors(req, res)) return res.status(403).json({ error: 'origin not allowed' });
+    const ip = req.ip ?? '';
+    const recent = (hits.get(ip) ?? []).filter((t) => Date.now() - t < 3_600_000);
+    if (recent.length >= 10) return res.status(429).json({ error: 'too many requests' });
+    hits.set(ip, [...recent, Date.now()]);
+    const b = (req.body ?? {}) as { email?: unknown; products?: unknown; lang?: unknown; website?: unknown };
+    if (b.website) return res.json({ ok: true }); // honeypot: bots fill every field; pretend it worked
+    const email = String(b.email ?? '').trim().toLowerCase();
+    if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return res.status(400).json({ error: 'invalid email' });
+    const products = (Array.isArray(b.products) ? b.products : []).filter((p): p is string => p === 'cloud' || p === 'mac');
+    if (!products.length) return res.status(400).json({ error: 'pick at least one product' });
+    const lang = b.lang === 'cs' ? 'cs' : 'en';
+    const ins = db.prepare('INSERT INTO waitlist(email, product, lang, created_at) VALUES(?, ?, ?, ?) ON CONFLICT DO NOTHING');
+    tx(db, () => products.forEach((p) => ins.run(email, p, lang, now())));
+    res.json({ ok: true });
+  });
 
   app.get('/a/:id', (req, res) => {
     const id = String(req.params.id);
@@ -65,6 +99,8 @@ export function createApp(db: DB, cfg: Config) {
     const n = (db.prepare('SELECT COUNT(*) AS n FROM meetings').get() as { n: number }).n;
     res.json({ ok: true, version: cfg.version, meetings: n, openrouter: !!cfg.openrouterKey });
   });
+
+  api.get('/waitlist', (_req, res) => res.json(db.prepare('SELECT email, product, lang, created_at FROM waitlist ORDER BY created_at').all()));
 
   api.post('/meetings', express.json(), (req, res) => {
     const b = MeetingCreate.parse(req.body);

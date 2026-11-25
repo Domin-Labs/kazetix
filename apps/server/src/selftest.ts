@@ -71,6 +71,7 @@ const port = 18000 + Math.floor(Math.random() * 1000);
 const cfg = loadConfig({
   PORT: String(port), DATA_DIR: dir, KAZETIX_API_TOKEN: 'api-secret', KAZETIX_MCP_PASSWORD: 'owner-pass',
   OPENROUTER_API_KEY: 'or', OPENROUTER_BASE_URL: fakeUrl, WORKER_INTERVAL_MS: '100', STT_CHUNK_S: '1',
+  WAITLIST_ORIGINS: 'https://kazetix.com',
 });
 const app = await start(cfg);
 const base = `http://localhost:${port}`;
@@ -218,6 +219,17 @@ try {
   const unauth = await fetch(`${base}/mcp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
   assert.equal(unauth.status, 401);
   assert.match(unauth.headers.get('www-authenticate') ?? '', /resource_metadata=/);
+
+  // --- public waitlist: allowed origin only, validated, deduplicated, honeypot, readable with the API token
+  const wl = (body: unknown, origin = 'https://kazetix.com') => call('POST', '/waitlist', body, { 'Content-Type': 'application/json', Origin: origin });
+  assert.equal((await wl({ email: 'a@b.cz', products: ['cloud'] }, 'https://evil.example')).status, 403);
+  assert.equal((await wl({ email: 'nope', products: ['cloud'] })).status, 400);
+  assert.equal((await wl({ email: 'a@b.cz', products: ['tv'] })).status, 400);
+  assert.equal((await wl({ email: ' A@b.cz ', products: ['cloud', 'mac'], lang: 'cs' })).body.ok, true);
+  assert.equal((await wl({ email: 'a@b.cz', products: ['mac'] })).body.ok, true); // duplicate is fine
+  assert.equal((await wl({ email: 'bot@spam.io', products: ['mac'], website: 'http://x' })).body.ok, true);
+  assert.deepEqual((await call('GET', '/api/waitlist')).body.map((r: any) => [r.email, r.product, r.lang]), [['a@b.cz', 'cloud', 'cs'], ['a@b.cz', 'mac', 'cs']]);
+  assert.equal((await call('GET', '/api/waitlist', undefined, {})).status, 401);
 
   console.log('selftest: all checks passed');
 } finally {

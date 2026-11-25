@@ -141,6 +141,8 @@ pnpm desktop:dev                              # desktop UI with Vite
 pnpm --filter @kazetix/desktop demo           # UI in a browser with a mocked Tauri backend
 ```
 
+The website (kazetix.com) is a static page in `apps/landing` (`index.html`, `style.css`, `app.js`, no build step); its screenshots come from the desktop demo harness. The server's optional `POST /waitlist` endpoint backs its waitlist form (`WAITLIST_ORIGINS`).
+
 Layout: `apps/desktop` (Tauri 2 + React), `apps/server` (Node + TypeScript), `packages/shared` (wire types, zod schemas),
 `docker/`, `scripts/`.
 
