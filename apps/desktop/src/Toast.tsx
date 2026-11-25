@@ -111,8 +111,8 @@ function Start({ title, platform, micApp, countdown }: { title: string; platform
     <Device counter={left * 1000} tag={left > 0 ? 'AUTO' : 'STOP'} title={p ? t('Call started in {p}', { p }) : t('Call started')}
       sub={micApp ? t('{app} is using the microphone', { app: micApp }) : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} lamp={micApp ? 'amber' : undefined}
       keys={[
-        <button key="no" className="hw key hw-tab hw-tab1" onClick={() => win.hide()}>{t('Not now')}</button>,
-        <button key="hints" className="hw key hw-tab hw-tab2" role="switch" aria-checked={hints} aria-selected={hints} onClick={() => updateSettings({ hints_enabled: !hints })}><span className="lamp" />{t('Automatic hints')}</button>,
+        <button key="tx" className="hw key hw-tab hw-tab1" role="radio" aria-checked={!hints} aria-selected={!hints} onClick={() => updateSettings({ hints_enabled: false })}><span className="lamp" />{t('Transcript only')}</button>,
+        <button key="hints" className="hw key hw-tab hw-tab2" role="radio" aria-checked={hints} aria-selected={hints} onClick={() => updateSettings({ hints_enabled: true })}><span className="lamp" />{t('Automatic hints')}</button>,
       ]}
       red={left > 0 ? `REC ${left}` : 'REC'} rec onRed={go}>
       <label className="label" htmlFor="title">{t('Title')}</label>

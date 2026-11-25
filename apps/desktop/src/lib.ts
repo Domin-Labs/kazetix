@@ -125,6 +125,19 @@ export function setPlastic(p: Plastic) {
   applyPlastic();
 }
 
+// ------------------------------------------------------------------ skin: which machine the device windows are (the plastic still picks light/dark)
+
+export type Skin = 'cassette' | 'pda';
+const SKIN_KEY = 'kazetix.skin';
+export const getSkin = () => (localStorage.getItem(SKIN_KEY) as Skin | null) ?? 'cassette';
+const applySkin = () => (document.documentElement.dataset.skin = getSkin());
+applySkin();
+addEventListener('storage', (e) => e.key === SKIN_KEY && applySkin());
+export function setSkin(k: Skin) {
+  localStorage.setItem(SKIN_KEY, k);
+  applySkin();
+}
+
 // ------------------------------------------------------------------ prep notes for the next call (.md made in Claude/ChatGPT)
 // One slot in localStorage (same origin in every window): filled ahead of time or in the start toast, taken by the overlay
 // when the call starts. The taken copy is kept per meeting so a reloaded overlay finds it again.
@@ -194,7 +207,7 @@ const CS: Record<string, string> = {
   'Got it': 'Rozumím', 'Audio settings': 'Nastavení zvuku', 'Server unavailable': 'Server nedostupný', 'Open settings': 'Otevřít nastavení',
   '{n} recordings wait on this PC and upload automatically once the connection is back.': 'Nahrávky čekající v počítači: {n}. Nahrají se samy, jakmile se spojení obnoví.',
   'Not recording': 'Nenahrává se', 'Start recording': 'Spustit nahrávání', 'Waiting for speech…': 'Čekám na řeč…', 'Audio problem': 'Problém se zvukem',
-  'Call started': 'Začal hovor', 'Call started in {p}': 'Začal hovor v {p}', Title: 'Název', 'Automatic hints': 'Automatické nápovědy', 'Record and transcribe': 'Nahrávat a přepsat', 'Not now': 'Teď ne',
+  'Call started': 'Začal hovor', 'Call started in {p}': 'Začal hovor v {p}', Title: 'Název', 'Automatic hints': 'Automatické nápovědy', 'Record and transcribe': 'Nahrávat a přepsat', 'Transcript only': 'Jen přepis',
   now: 'teď', 'Call saved': 'Hovor uložen', 'Uploaded to server': 'Nahráno na server', 'Exact transcript': 'Přesný přepis', 'Summary and action items': 'Souhrn a úkoly',
   waiting: 'čeká', done: 'hotovo', 'You can close this, it finishes on the server.': 'Okno můžeš zavřít, dokončí se na serveru.', 'Copy live transcript': 'Kopírovat živý přepis',
   'Notes are ready': 'Zápis je hotový', '{n} speakers': '{n} mluvčí', '1 speaker': '1 mluvčí', '{n} action items': 'úkoly: {n}', '1 action item': '1 úkol', 'Saved on the server · available via MCP': 'Uloženo na server · dostupné přes MCP',
@@ -235,7 +248,8 @@ const CS: Record<string, string> = {
   'Connect Claude': 'Připojit Claude', 'Claude reads your calls, summaries and action items from this PC. Claude Desktop starts Kazetix in the background when it needs them.': 'Claude čte hovory, shrnutí a úkoly z tohoto počítače. Claude Desktop si Kazetix spustí na pozadí, když je potřebuje.',
   'Add to Claude Desktop': 'Přidat do Claude Desktop', 'Added to {path}. Restart Claude Desktop.': 'Přidáno do {path}. Restartuj Claude Desktop.', 'Claude Code': 'Claude Code', 'Summary model': 'Model pro shrnutí',
   'Exact transcript after the call': 'Po hovoru přesný přepis', 'Saved on this PC · available via MCP': 'Uloženo v tomto počítači · dostupné přes MCP', 'You can close this, it finishes in the background.': 'Okno můžeš zavřít, dokončí se na pozadí.',
-  'Plastic': 'Plast', 'Beige': 'Béžový', 'Black': 'Černý', 'System': 'Podle systému', 'Housing': 'Kryt',
+  'Plastic': 'Plast', 'Beige': 'Béžový', 'Black': 'Černý', 'System': 'Podle systému', 'Housing': 'Kryt', Privacy: 'Soukromí', 'Allow screenshots and screen sharing of Kazetix': 'Povolit snímky obrazovky a sdílení obrazovky s Kazetixem',
+  'Off: the overlay never shows up when you share your screen.': 'Vypnuto: při sdílení obrazovky overlay nikdo neuvidí.', 'Skin': 'Vzhled', 'Cassette machine': 'Kazeťák', 'PDA': 'PDA', 'Light': 'Světlý', 'Dark': 'Tmavý',
 };
 
 let lang: 'en' | 'cs' = 'en';

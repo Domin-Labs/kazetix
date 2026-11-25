@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { api, copy, getPlastic, setPlastic, t, updateSettings, useEvent, useSettings, type Plastic, type Settings } from './lib';
+import { api, copy, getPlastic, getSkin, setPlastic, setSkin, t, updateSettings, useEvent, useSettings, type Plastic, type Settings, type Skin } from './lib';
 import { Meter } from './Overlay';
 import { Brand } from './Prep';
 import Home from './Home';
@@ -59,6 +59,7 @@ export default function SettingsWindow() {
 function General({ s }: { s: Settings }) {
   const [log, setLog] = useState('');
   const [plastic, setP] = useState<Plastic>(getPlastic());
+  const [skin, setK] = useState<Skin>(getSkin());
   useEffect(() => void api.logPath().then(setLog), []);
   return (
     <>
@@ -90,10 +91,11 @@ function General({ s }: { s: Settings }) {
         </div>
       </div>
       <div className="section">
+        {/* ponytail: skin picker hidden until the compact PDA skin is designed */}
         <span className="label">{t('Housing')}</span>
         <div className="grid2" style={{ gridTemplateColumns: 'repeat(3, 1fr)', maxWidth: 480 }}>
           {(['beige', 'black', 'system'] as const).map((p) => (
-            <button key={p} className="option" aria-pressed={plastic === p} onClick={() => (setPlastic(p), setP(p))}><b>{t(p === 'beige' ? 'Beige' : p === 'black' ? 'Black' : 'System')}</b></button>
+            <button key={p} className="option" aria-pressed={plastic === p} onClick={() => (setPlastic(p), setP(p))}><b>{t(skin === 'pda' ? (p === 'beige' ? 'Light' : p === 'black' ? 'Dark' : 'System') : p === 'beige' ? 'Beige' : p === 'black' ? 'Black' : 'System')}</b></button>
           ))}
         </div>
       </div>

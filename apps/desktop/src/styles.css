@@ -488,3 +488,76 @@ body.settings-window { background: url('./assets/tex-beige.webp') 0 0 / 256px; }
   background: linear-gradient(135deg, transparent 52%, rgba(255, 255, 255, 0.55) 52% 57%, transparent 57% 66%, rgba(255, 255, 255, 0.55) 66% 71%, transparent 71% 80%, rgba(255, 255, 255, 0.55) 80% 85%, transparent 85%); }
 .housing:hover .resize-grip { opacity: 0.6; }
 .resize-grip:hover { opacity: 1; }
+
+/* ================================================================ skin: PDA — a newer pocket machine: one glass front almost to the edge
+   (a thin rim of brushed metal), a colour screen. Like the cassette machine it is a generated plate (assets/housing-pda-*.webp,
+   1024 × 1536: silver + white glass = light, graphite + black glass = dark); controls sit on its painted keys, in % of the plate. */
+:root.device[data-skin='pda'] {
+  --pda-frame: linear-gradient(135deg, #f1f2f4, #c3c7cd 38%, #e4e6ea 58%, #a9aeb5);
+  --pda-glass: linear-gradient(180deg, #fbfbfc, #eef0f2);
+  --pda-glass-edge: rgba(40, 48, 58, 0.18);
+  --pda-key: linear-gradient(180deg, #ffffff, #e9ecef);
+  --pda-key-edge: rgba(40, 48, 58, 0.2);
+  --pda-key-ink: #2a3139;
+  --pda-ink-2: #56616c;
+  --lcd: #edf1f4; --lcd-hi: #f9fbfc; --lcd-ink: #1a1f25; --lcd-ink-2: #56616c; --lcd-line: rgba(26, 31, 37, 0.12); --lcd-chip: #27313b;
+}
+:root.device[data-skin='pda'][data-plastic='black'] {
+  --pda-frame: linear-gradient(135deg, #5d6167, #2b2e32 38%, #474b50 58%, #1b1d20);
+  --pda-glass: linear-gradient(180deg, #121417, #0a0b0d);
+  --pda-glass-edge: rgba(255, 255, 255, 0.08);
+  --pda-key: linear-gradient(180deg, #2a2e33, #1d2024);
+  --pda-key-edge: rgba(0, 0, 0, 0.7);
+  --pda-key-ink: #e3e8ec;
+  --pda-ink-2: #a3aeb8;
+  /* chips stay the inverse of the screen: light chips with dark text on the dark screen */
+  --lcd: #141a20; --lcd-hi: #1b232b; --lcd-ink: #e6ecf0; --lcd-ink-2: #a3aeb8; --lcd-line: rgba(230, 236, 240, 0.14); --lcd-chip: #d5dee6;
+}
+[data-skin='pda'] .housing { background-image: url('./assets/housing-pda-light.webp'); }
+[data-skin='pda'][data-plastic='black'] .housing { background-image: url('./assets/housing-pda-dark.webp'); }
+[data-skin='pda'] .hw-led { left: 7.3%; top: 5.6%; width: 1.8%; height: 1.2%; }
+[data-skin='pda'] .hw-counter { left: 10.5%; top: 3.6%; width: 25%; height: 5.2%; }
+/* the round corner keys and the rocker: invisible caps over the painted keys */
+[data-skin='pda'] .key { border-radius: 16px; }
+[data-skin='pda'] .key:active, [data-skin='pda'] .key[aria-pressed='true'], [data-skin='pda'] .key[aria-selected='true'] { transform: translateY(1px); background: rgba(0, 0, 0, 0.07); box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.22); }
+[data-skin='pda'][data-plastic='black'] .key:active, [data-skin='pda'][data-plastic='black'] .key[aria-pressed='true'], [data-skin='pda'][data-plastic='black'] .key[aria-selected='true'] { background: rgba(0, 0, 0, 0.3); box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6); }
+[data-skin='pda'] .hw-pin, [data-skin='pda'] .hw-min, [data-skin='pda'] .hw-close { top: 3.6%; width: 7.7%; height: 5.2%; color: var(--pda-key-ink); border-radius: 50%; }
+[data-skin='pda'] .hw-pin { left: 74.6%; }
+[data-skin='pda'] .hw-min, [data-skin='pda'] .hw-close { left: 84.3%; }
+[data-skin='pda'] .keyicon { filter: none; width: 15px; height: 15px; }
+[data-skin='pda'] .hw-tab { top: 10.2%; height: 5.8%; color: var(--pda-key-ink); font-size: 10.5px; border-radius: 13px; }
+[data-skin='pda'] .hw-tab[aria-selected='true'] { color: var(--pda-key-ink); }
+[data-skin='pda'] .hw-tab .lamp { background: rgba(127, 136, 146, 0.45); }
+[data-skin='pda'] .hw-tab1 { left: 5%; width: 44.6%; }
+[data-skin='pda'] .hw-tab2 { left: 50.4%; width: 44.6%; }
+/* colour screen, flush under the glass */
+[data-skin='pda'] .hw-lcd { --lcd-ink-2: var(--pda-ink-2); left: 5%; top: 17.6%; width: 90%; height: 66%; border-radius: 10px;
+  background: linear-gradient(180deg, var(--lcd-hi), var(--lcd)); box-shadow: 0 0 0 1px var(--pda-glass-edge), inset 0 1px 3px rgba(0, 0, 0, 0.12); }
+[data-skin='pda'] .lcd { background: linear-gradient(180deg, var(--lcd-hi), var(--lcd)); box-shadow: none; }
+[data-skin='pda'] .lcd-head { background: transparent; color: var(--lcd-ink); border-bottom: 1px solid var(--lcd-line); }
+[data-skin='pda'] .lcd-input, [data-skin='pda'] .lcd .prep .input { background: var(--lcd-hi); border-color: var(--lcd-line); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12); }
+[data-skin='pda'] .lcd-error { color: #c8321f !important; }
+[data-skin='pda'][data-plastic='black'] .lcd-error { color: #ff8a73 !important; }
+[data-skin='pda'] .toast-lcd .bar div { background: var(--led); }
+/* bottom row: the meter window left, the red key right */
+[data-skin='pda'] .hw-meters { left: 6.6%; top: 86.5%; width: 23.9%; height: 5.1%; }
+[data-skin='pda'] .hw-meters .meter span { width: 12px; height: 5px; }
+[data-skin='pda'] .hw-live { left: 6.3%; top: 91.9%; width: 3%; }
+[data-skin='pda'] .hw-end { left: 63.5%; top: 86.4%; width: 31.5%; height: 8.2%; border-radius: 30px; }
+[data-skin='pda'] .resize-grip { right: 12px; bottom: 12px; border-bottom-right-radius: 28px; }
+[data-skin='pda'][data-plastic='beige'] .resize-grip { filter: invert(0.7); }
+
+/* capsule and flip display in the same metal and glass */
+[data-skin='pda'] .capsule { background: var(--pda-frame); border-radius: 22px; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), inset 0 -1px 2px rgba(0, 0, 0, 0.35); }
+[data-skin='pda'] .cap-face { background: var(--pda-glass); border-radius: 16px; box-shadow: 0 0 0 1px var(--pda-glass-edge); }
+[data-skin='pda'] .cap-tray { background: none; box-shadow: none; }
+[data-skin='pda'] .cap-window { background: var(--lcd); box-shadow: 0 0 0 1px var(--pda-glass-edge); border-radius: 10px; }
+[data-skin='pda'] .cap-window .counter { color: var(--pda-seg); text-shadow: none; }
+[data-skin='pda'] .cap-window .meter span { background: rgba(127, 136, 146, 0.35); }
+[data-skin='pda'] .cap-sep { background: var(--lcd-line); }
+[data-skin='pda'] .cap-key { border: 0; border-radius: 12px; background: var(--pda-key); color: var(--pda-key-ink); box-shadow: 0 0 0 1px var(--pda-key-edge), 0 1px 2px rgba(0, 0, 0, 0.18); }
+[data-skin='pda'] .cap-key .keyicon { color: var(--pda-key-ink); }
+[data-skin='pda'] .cap-key.red { color: #fff; background: linear-gradient(180deg, #ec5a45, #cf3722); box-shadow: 0 0 0 1px rgba(120, 25, 12, 0.6); }
+[data-skin='pda'] .flip-hinge { background: var(--pda-frame); box-shadow: none; }
+[data-skin='pda'] .flip-body { background: var(--pda-frame); border-radius: 4px 4px 18px 18px; }
+[data-skin='pda'] .flip-lcd { border-radius: 12px; }
