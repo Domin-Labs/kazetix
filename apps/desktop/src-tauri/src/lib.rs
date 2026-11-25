@@ -81,7 +81,6 @@ struct App {
     toast: Mutex<Value>,
     shortcuts: Mutex<Vec<(Shortcut, &'static str)>>,
     record_item: Mutex<Option<MenuItem<tauri::Wry>>>,
-    overlay_item: Mutex<Option<MenuItem<tauri::Wry>>>,
     hints_item: Mutex<Option<CheckMenuItem<tauri::Wry>>>,
     shortcut_errors: Mutex<Vec<&'static str>>,
 }
@@ -118,9 +117,6 @@ fn apply_settings(app: &AppHandle, s: &Settings) {
     st.outbox.kick();
     register_shortcuts(app, s);
     set_record_label(app, st.session.lock().unwrap().is_some());
-    if let Some(i) = st.overlay_item.lock().unwrap().as_ref() {
-        let _ = i.set_text(format!("Show overlay\t{}", s.shortcuts.overlay));
-    }
     let al = app.autolaunch();
     let _ = if s.autostart { al.enable() } else { al.disable() };
     if let Some(i) = st.hints_item.lock().unwrap().as_ref() {
@@ -729,13 +725,12 @@ fn toggle_record(app: &AppHandle) {
 fn build_tray(app: &AppHandle) -> tauri::Result<()> {
     let s = app.state::<App>().settings.lock().unwrap().clone();
     let record = MenuItem::with_id(app, "record", format!("Start recording\t{}", s.shortcuts.record), true, None::<&str>)?;
-    let overlay = MenuItem::with_id(app, "overlay", format!("Show overlay\t{}", s.shortcuts.overlay), true, None::<&str>)?;
     let hints = CheckMenuItem::with_id(app, "hints", "Automatic hints", true, s.hints_enabled, None::<&str>)?;
     let settings = MenuItem::with_id(app, "settings", "Settings", true, None::<&str>)?;
     let quit = MenuItem::with_id(app, "quit", "Quit Kazetix", true, None::<&str>)?;
     let sep = PredefinedMenuItem::separator(app)?;
     let sep2 = PredefinedMenuItem::separator(app)?;
-    let menu = Menu::with_items(app, &[&record, &overlay, &sep, &hints, &settings, &sep2, &quit])?;
+    let menu = Menu::with_items(app, &[&record, &sep, &hints, &settings, &sep2, &quit])?;
     TrayIconBuilder::with_id("main")
         .icon(app.default_window_icon().cloned().expect("icon"))
         .tooltip("Kazetix")
@@ -743,7 +738,6 @@ fn build_tray(app: &AppHandle) -> tauri::Result<()> {
         .show_menu_on_left_click(false)
         .on_menu_event(|app, e| match e.id().as_ref() {
             "record" => toggle_record(app),
-            "overlay" => toggle_overlay(app),
             "hints" => {
                 let st = app.state::<App>();
                 let mut s = st.settings.lock().unwrap().clone();
@@ -765,17 +759,12 @@ fn build_tray(app: &AppHandle) -> tauri::Result<()> {
         })
         .on_tray_icon_event(|tray, e| {
             if let tauri::tray::TrayIconEvent::Click { button: tauri::tray::MouseButton::Left, button_state: tauri::tray::MouseButtonState::Up, .. } = e {
-                let app = tray.app_handle();
-                if app.state::<App>().session.lock().unwrap().is_some() {
-                    toggle_overlay(app);
-                } else {
-                    open_settings_window(app, None);
-                }
+                // left click = the record key: offers to start a call, or brings the overlay back while one is running
+                open_start(tray.app_handle());
             }
         })
         .build(app)?;
     *app.state::<App>().record_item.lock().unwrap() = Some(record);
-    *app.state::<App>().overlay_item.lock().unwrap() = Some(overlay);
     *app.state::<App>().hints_item.lock().unwrap() = Some(hints);
     Ok(())
 }
@@ -841,7 +830,6 @@ pub fn run() {
                 toast: Mutex::new(json!({})),
                 shortcuts: Mutex::new(vec![]),
                 record_item: Mutex::new(None),
-                overlay_item: Mutex::new(None),
                 hints_item: Mutex::new(None),
                 shortcut_errors: Mutex::new(vec![]),
             });
