@@ -27,7 +27,6 @@ const CS = {
   'spec.channels': 'Kanály', 'spec.channelsV': '2 · Vy + Ostatní, odděleně', 'spec.live': 'Živý text', 'spec.liveV': '1–3 s po každé větě',
   'spec.prep': 'Příprava', 'spec.prepV': '.md soubor nebo text z Clauda či ChatGPT', 'spec.start': 'Začátek hovoru', 'spec.startV': 'Rozpozná se sám',
   'spec.server': 'Úložiště', 'spec.serverV': 'Ve vašem PC, nebo na vlastním serveru', 'spec.archive': 'Claude', 'spec.archiveV': 'Vestavěné MCP pro Claude Desktop i Code',
-  'spec.skins': 'Vzhled', 'spec.skinsV': 'Originální · Moderní, oba světlé i tmavé',
   'sk.title': 'Dva přístroje. Vyberte si svůj.', 'sk.lead': 'Stejný záznamník ve dvou krytech. Přepnete ho kdykoli v Nastavení, oba jsou ve světlé i tmavé verzi a každý můžete tahem zvětšit nebo zmenšit.',
   'sk.o': 'Originální', 'sk.oT': 'Stolní záznamník z osmdesátek: velké klávesy, počítadlo pásku a mřížka reproduktoru.',
   'sk.m': 'Moderní', 'sk.mT': 'Kapesní přístroj s tenkým rámečkem, poloviční. Displej jde skoro až k okraji, takže se na notebooku vejde vedle videa.',
