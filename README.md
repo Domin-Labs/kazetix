@@ -24,7 +24,7 @@ or on a server you run, and Claude can read it over MCP. All AI goes through one
 - **Home overview.** Calls, hours, words and open action items, five weeks of activity and recent calls with their notes.
 - **Built-in archive + MCP.** Search past calls locally and connect Claude Desktop or Claude Code to them.
 - **Optional self-hosted server.** Docker or plain Node; exact transcript, summaries and an MCP endpoint for claude.ai.
-- **Beige or black housing**, Czech and English UI.
+- **Two skins**: the Original desk answering machine or the half-size Modern pocket machine, each in a light and a dark housing. Czech and English UI.
 
 The overlay is excluded from screen capture, and a local stereo Ogg/Opus backup of the call is kept (left = mic, right = system audio).
 
@@ -35,6 +35,9 @@ The overlay is excluded from screen capture, and a local stereo Ogg/Opus backup 
     <td align="center" valign="top" width="33%"><img src="docs/images/overlay-assist-en-black.webp" width="240" alt="Assist tab with a suggested answer, questions to ask and chat"><br><sub>Hints and chat in one Assist tab</sub></td>
     <td align="center" valign="top" width="33%"><img src="docs/images/toast-auto-en-beige.webp" width="240" alt="A call is detected: title, prep and a REC countdown on the display"><br><sub>A call is detected</sub></td>
     <td align="center" valign="top" width="33%"><img src="docs/images/toast-done-en-black.webp" width="240" alt="Notes are ready: summary key points and copy keys"><br><sub>Notes are ready</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" colspan="3"><img src="docs/images/modern-assist-en-beige.webp" width="240" alt="Modern skin, light: a pocket machine whose screen runs to a thin rim"> &nbsp; <img src="docs/images/modern-assist-en-black.webp" width="240" alt="Modern skin, dark"><br><sub>The Modern skin, light and dark: half the size of the Original</sub></td>
   </tr>
   <tr>
     <td align="center" valign="top" colspan="3"><img src="docs/images/capsule-en-beige.webp" width="440" alt="Capsule mode: tape counter, level meters, Assist and End"><br><sub>Capsule mode: the machine seen from the top</sub><br><br><img src="docs/images/capsule-flip-en-beige.webp" width="440" alt="Capsule with the display flipped out, showing the suggested answer and the latest lines"><br><sub>…with the display flipped out</sub></td>

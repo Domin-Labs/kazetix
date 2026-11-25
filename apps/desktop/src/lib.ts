@@ -127,9 +127,9 @@ export function setPlastic(p: Plastic) {
 
 // ------------------------------------------------------------------ skin: which machine the device windows are (the plastic still picks light/dark)
 
-export type Skin = 'cassette' | 'pda';
+export type Skin = 'original' | 'modern';
 const SKIN_KEY = 'kazetix.skin';
-export const getSkin = () => (localStorage.getItem(SKIN_KEY) as Skin | null) ?? 'cassette';
+export const getSkin = (): Skin => (localStorage.getItem(SKIN_KEY) === 'modern' ? 'modern' : 'original');
 const applySkin = () => (document.documentElement.dataset.skin = getSkin());
 applySkin();
 addEventListener('storage', (e) => e.key === SKIN_KEY && applySkin());
@@ -137,6 +137,19 @@ export function setSkin(k: Skin) {
   localStorage.setItem(SKIN_KEY, k);
   applySkin();
 }
+
+/** The machine's front at scale 1 (its CSS is drawn at this size), and the scale the user dragged it to.
+ *  One scale for both windows and both skins, stored as the original machine's width (300–660). */
+const SIZE: Record<Skin, [number, number]> = { original: [440, 660], modern: [340, 440] };
+export const machine = () => SIZE[getSkin()];
+export const machineScale = () => Math.min(660, Math.max(300, Number(localStorage.getItem('kazetix.overlay.w')) || 440)) / 440;
+export const setMachineScale = (s: number) => localStorage.setItem('kazetix.overlay.w', String(Math.round(Math.min(660, Math.max(300, s * 440)))));
+/** window size of the machine front at the remembered scale */
+export const machineSize = () => {
+  const [w, h] = machine();
+  const k = machineScale();
+  return [Math.round(w * k), Math.round(h * k)] as const;
+};
 
 // ------------------------------------------------------------------ prep notes for the next call (.md made in Claude/ChatGPT)
 // One slot in localStorage (same origin in every window): filled ahead of time or in the start toast, taken by the overlay
@@ -249,7 +262,7 @@ const CS: Record<string, string> = {
   'Add to Claude Desktop': 'Přidat do Claude Desktop', 'Added to {path}. Restart Claude Desktop.': 'Přidáno do {path}. Restartuj Claude Desktop.', 'Claude Code': 'Claude Code', 'Summary model': 'Model pro shrnutí',
   'Exact transcript after the call': 'Po hovoru přesný přepis', 'Saved on this PC · available via MCP': 'Uloženo v tomto počítači · dostupné přes MCP', 'You can close this, it finishes in the background.': 'Okno můžeš zavřít, dokončí se na pozadí.',
   'Plastic': 'Plast', 'Beige': 'Béžový', 'Black': 'Černý', 'System': 'Podle systému', 'Housing': 'Kryt', Privacy: 'Soukromí', 'Allow screenshots and screen sharing of Kazetix': 'Povolit snímky obrazovky a sdílení obrazovky s Kazetixem',
-  'Off: the overlay never shows up when you share your screen.': 'Vypnuto: při sdílení obrazovky overlay nikdo neuvidí.', 'Skin': 'Vzhled', 'Cassette machine': 'Kazeťák', 'PDA': 'PDA', 'Light': 'Světlý', 'Dark': 'Tmavý',
+  'Off: the overlay never shows up when you share your screen.': 'Vypnuto: při sdílení obrazovky overlay nikdo neuvidí.', 'Skin': 'Vzhled', 'Original': 'Originální', 'Modern': 'Moderní', 'Light': 'Světlý', 'Dark': 'Tmavý',
 };
 
 let lang: 'en' | 'cs' = 'en';

@@ -91,11 +91,16 @@ function General({ s }: { s: Settings }) {
         </div>
       </div>
       <div className="section">
-        {/* ponytail: skin picker hidden until the compact PDA skin is designed */}
+        <span className="label">{t('Skin')}</span>
+        <div className="grid2" style={{ maxWidth: 480 }}>
+          {(['original', 'modern'] as const).map((k) => (
+            <button key={k} className="option" aria-pressed={skin === k} onClick={() => (setSkin(k), setK(k))}><b>{t(k === 'modern' ? 'Modern' : 'Original')}</b></button>
+          ))}
+        </div>
         <span className="label">{t('Housing')}</span>
         <div className="grid2" style={{ gridTemplateColumns: 'repeat(3, 1fr)', maxWidth: 480 }}>
           {(['beige', 'black', 'system'] as const).map((p) => (
-            <button key={p} className="option" aria-pressed={plastic === p} onClick={() => (setPlastic(p), setP(p))}><b>{t(skin === 'pda' ? (p === 'beige' ? 'Light' : p === 'black' ? 'Dark' : 'System') : p === 'beige' ? 'Beige' : p === 'black' ? 'Black' : 'System')}</b></button>
+            <button key={p} className="option" aria-pressed={plastic === p} onClick={() => (setPlastic(p), setP(p))}><b>{t(skin === 'modern' ? (p === 'beige' ? 'Light' : p === 'black' ? 'Dark' : 'System') : p === 'beige' ? 'Beige' : p === 'black' ? 'Black' : 'System')}</b></button>
           ))}
         </div>
       </div>

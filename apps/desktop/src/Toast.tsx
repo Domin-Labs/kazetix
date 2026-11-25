@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { getCurrentWindow, currentMonitor, primaryMonitor, LogicalSize, LogicalPosition } from '@tauri-apps/api/window';
-import { api, copy, mmss, platformName, setPrepSlot, speaker, t, updateSettings, useEvent, usePrepSlot, useSettings, type MeetingView, type Segment, type ServerStatus } from './lib';
+import { api, copy, machine, machineScale, machineSize, mmss, setMachineScale, platformName, setPrepSlot, speaker, t, updateSettings, useEvent, usePrepSlot, useSettings, type MeetingView, type Segment, type ServerStatus } from './lib';
 import { KeyIcon, PrepBox } from './Prep';
 import { Counter } from './Overlay';
 
@@ -11,16 +11,13 @@ type ToastState =
   | { kind: 'processing'; meeting_id: string; title: string; platform: string | null; duration_s: number; upload: boolean; local?: boolean; segments: Segment[] }
   | { kind?: undefined };
 
-// The toast is the overlay's machine: same width (remembered from resizing either window), drawn at 440 and scaled.
-const BASE_W = 440;
-const devW = () => Math.min(660, Math.max(300, Number(localStorage.getItem('kazetix.overlay.w')) || BASE_W));
+// The toast is the overlay's machine: same skin and scale (remembered from resizing either window).
 let placing = false;
 
-/** Size the window to the machine (2:3) at the remembered width and dock it bottom-right above the taskbar. */
+/** Size the window to the machine at the remembered scale and dock it bottom-right above the taskbar. */
 async function fit() {
-  const W = devW();
-  const h = Math.round(W * 1.5);
-  document.documentElement.style.zoom = String(W / BASE_W);
+  const [W, h] = machineSize();
+  document.documentElement.style.zoom = String(machineScale());
   const mon = (await currentMonitor()) ?? (await primaryMonitor());
   if (!mon) return;
   placing = true;
@@ -45,19 +42,21 @@ export default function Toast() {
   useLayoutEffect(() => {
     if (!ref.current) return;
     fit();
-    // a drag on the corner grip resizes the window: keep 2:3, remember the width for both windows
+    // a drag on the corner grip resizes the window: keep the machine's shape, remember the width for both windows
     let t0: ReturnType<typeof setTimeout>;
     const onResize = () => {
       if (placing) return;
-      document.documentElement.style.zoom = String(innerWidth / BASE_W);
+      document.documentElement.style.zoom = String(innerWidth / machine()[0]);
       clearTimeout(t0);
       t0 = setTimeout(() => {
-        localStorage.setItem('kazetix.overlay.w', String(Math.min(660, Math.max(300, Math.round(innerWidth)))));
+        setMachineScale(innerWidth / machine()[0]);
         fit();
       }, 250);
     };
+    const onSkin = (e: StorageEvent) => e.key === 'kazetix.skin' && fit();
     addEventListener('resize', onResize);
-    return () => (clearTimeout(t0), removeEventListener('resize', onResize));
+    addEventListener('storage', onSkin);
+    return () => (clearTimeout(t0), removeEventListener('resize', onResize), removeEventListener('storage', onSkin));
   }, []);
   return (
     <div ref={ref} className="toast" onKeyDown={(e) => e.key === 'Escape' && win.hide()}>

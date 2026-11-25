@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { getCurrentWindow, currentMonitor, primaryMonitor, LogicalSize, LogicalPosition } from '@tauri-apps/api/window';
 import type { Hint } from '@kazetix/shared';
-import { activePrep, api, copy, keepActivePrep, mmss, platformName, setPrepSlot, speaker, t, takePrep, uid, updateSettings, useEvent, useNow, usePrepSlot, useSettings, type Prep, type Segment, type ServerStatus, type SessionSnap, type SttStatus, type TranscriptEvt } from './lib';
+import { activePrep, api, copy, keepActivePrep, machine, machineScale, machineSize, mmss, setMachineScale, platformName, setPrepSlot, speaker, t, takePrep, uid, updateSettings, useEvent, useNow, usePrepSlot, useSettings, type Prep, type Segment, type ServerStatus, type SessionSnap, type SttStatus, type TranscriptEvt } from './lib';
 import { KeyIcon, PrepBox, XIcon } from './Prep';
 import { chat, hint, updateRolling, type Msg, type Rolling } from './ai';
 
@@ -11,14 +11,12 @@ type Tab = 'transcript' | 'assist';
 const NEW_MS = 30_000; // how long a fresh hint or question stays marked as new
 const win = getCurrentWindow();
 
-// The overlay can be resized by dragging its edge; the machine keeps its 2:3 shape and scales as a whole (CSS zoom).
-const BASE_W = 440;
-const CAP_H = 96; // the machine's thickness at BASE_W (docs/device-drawing.svg)
+// The overlay can be resized by dragging its edge; the machine keeps its shape and scales as a whole (CSS zoom).
+const CAP_H = 96; // the machine's thickness at scale 1 (docs/device-drawing.svg)
 const HINT_H = 170; // hint card under the capsule
 const FLIP_H = 210; // the display flipped out of the capsule on its hinge
-const ovW = () => Math.min(660, Math.max(300, Number(localStorage.getItem('kazetix.overlay.w')) || BASE_W));
 
-/** `extra`: px (at BASE_W) hanging under the capsule: the hint card or the flipped-out display. */
+/** `extra`: px (at scale 1) hanging under the capsule: the hint card or the flipped-out display. */
 async function placeWindow(mode: 'expanded' | 'capsule', extra: number, pos: [number, number] | null) {
   const mon = (await currentMonitor()) ?? (await primaryMonitor());
   if (!mon) return;
@@ -26,12 +24,12 @@ async function placeWindow(mode: 'expanded' | 'capsule', extra: number, pos: [nu
   const [mx, my, mw] = [mon.position.x / k, mon.position.y / k, mon.size.width / k];
   if (mode === 'capsule') {
     // the capsule is the same machine seen from its side: as wide as the front, as tall as the machine is thick
-    const w = ovW();
-    await win.setSize(new LogicalSize(w, Math.round((CAP_H + extra) * (w / BASE_W))));
+    const [w] = machineSize();
+    await win.setSize(new LogicalSize(w, Math.round((CAP_H + extra) * machineScale())));
     await win.setPosition(new LogicalPosition(Math.round(mx + (mw - w) / 2), Math.round(my + 10)));
   } else {
-    const w = ovW();
-    await win.setSize(new LogicalSize(w, Math.round(w * 1.5)));
+    const [w, h] = machineSize();
+    await win.setSize(new LogicalSize(w, h));
     const [x, y] = pos ?? [mx + mw - w - 24, my + 80];
     await win.setPosition(new LogicalPosition(x, y));
   }
@@ -168,9 +166,9 @@ export default function Overlay() {
     }
   });
 
-  // resize by dragging: keep the 2:3 shape, scale the machine, remember the width
+  // resize by dragging: keep the machine's shape, scale the machine, remember the width
   useEffect(() => {
-    const scale = () => (document.documentElement.style.zoom = String(innerWidth / BASE_W));
+    const scale = () => (document.documentElement.style.zoom = String(innerWidth / machine()[0]));
     scale();
     let t0: ReturnType<typeof setTimeout>;
     const onResize = () => {
@@ -178,13 +176,20 @@ export default function Overlay() {
       if (modeRef.current === 'capsule') return;
       clearTimeout(t0);
       t0 = setTimeout(() => {
-        const w = Math.min(660, Math.max(300, Math.round(innerWidth)));
-        localStorage.setItem('kazetix.overlay.w', String(w));
-        if (Math.abs(innerHeight - w * 1.5) > 2) win.setSize(new LogicalSize(w, Math.round(w * 1.5)));
+        setMachineScale(innerWidth / machine()[0]);
+        const [w, h] = machineSize();
+        if (Math.abs(innerWidth - w) > 2 || Math.abs(innerHeight - h) > 2) win.setSize(new LogicalSize(w, h));
       }, 250);
     };
+    // the skin was switched in Settings: the other machine has another shape
+    const onSkin = (e: StorageEvent) => {
+      if (e.key !== 'kazetix.skin') return;
+      if (modeRef.current === 'capsule') placeWindow('capsule', flipRef.current ? FLIP_H : 0, null);
+      else win.setSize(new LogicalSize(...machineSize()));
+    };
     addEventListener('resize', onResize);
-    return () => removeEventListener('resize', onResize);
+    addEventListener('storage', onSkin);
+    return () => (removeEventListener('resize', onResize), removeEventListener('storage', onSkin));
   }, []);
 
   // remember the expanded overlay position

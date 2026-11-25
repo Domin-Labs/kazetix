@@ -154,6 +154,22 @@ h1 { font: 900 clamp(3.4rem, 7.6vw, 6.6rem)/0.9 var(--cond); font-stretch: 70%; 
 
 /* ---------------------------------------------------------------- features */
 .section-title { font: 900 clamp(2rem, 4.2vw, 3.4rem)/0.98 var(--cond); font-stretch: 68%; letter-spacing: -0.01em; text-wrap: balance; padding-top: 14px; border-top: 3px solid var(--rule); }
+.skins { padding-top: clamp(56px, 8vw, 110px); }
+/* both machines at their real relative size, standing on one baseline */
+.skin-row { margin-top: clamp(28px, 4vw, 48px); max-width: 860px; display: grid; grid-template-columns: 434fr 340fr; grid-template-rows: auto auto; column-gap: clamp(20px, 5vw, 72px); row-gap: 16px; }
+.skin { margin: 0; display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end; }
+.skin figcaption { align-self: start; }
+.skin img { width: 100%; height: auto; filter: drop-shadow(0 18px 22px var(--shadow)); }
+.skin figcaption { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 4px; }
+@media (max-width: 560px) {
+  .skin-row { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 40px; }
+  .skin { grid-row: auto; grid-template-rows: none; gap: 14px; }
+  .skin img { width: min(100%, 300px); }
+  .skin + .skin img { width: min(78%, 235px); } /* the modern one at its real size against the original */
+}
+.skin figcaption b { font: 900 1.5rem/1 var(--cond); font-stretch: 68%; text-transform: uppercase; letter-spacing: 0.02em; }
+.skin figcaption .dim { font: 600 0.85rem/1 var(--cond); color: var(--ink-2); letter-spacing: 0.06em; }
+.skin figcaption span:last-child { flex-basis: 100%; color: var(--ink-2); }
 .section-lead { margin-top: 14px; max-width: 40em; font-size: clamp(1.05rem, 1.4vw, 1.22rem); color: var(--ink-2); }
 .features, .how, .serverside, .faq, .install { padding-top: clamp(56px, 8vw, 104px); }
 .catalog { margin-top: clamp(20px, 3vw, 36px); display: flex; flex-direction: column; }

@@ -6,6 +6,8 @@ const W = q.get('w') ?? 'overlay'; // overlay | toast | settings
 const S = q.get('s') ?? ''; // overlay: idle | transcript | assist | chat | capsule; toast: start | processing | done; settings: page
 const CS = q.get('lang') === 'cs';
 localStorage.setItem('kazetix.plastic', q.get('plastic') ?? 'beige');
+localStorage.setItem('kazetix.skin', q.get('skin') ?? 'original');
+
 
 const PREP_MD = CS
   ? '# Příprava: Acme — týdenní sync\n\n## Cíl\nDomluvit rozsah první verze a termín pátek.\n\n## Body\n- Potvrdit rozsah první verze\n- Termín: pátek 28. 11.\n- Cena: 120 000 Kč za první fázi\n- Zeptat se na rozpočet na fázi 2\n- Kdo u nich schvaluje design\n'

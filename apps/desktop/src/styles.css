@@ -489,75 +489,107 @@ body.settings-window { background: url('./assets/tex-beige.webp') 0 0 / 256px; }
 .housing:hover .resize-grip { opacity: 0.6; }
 .resize-grip:hover { opacity: 1; }
 
-/* ================================================================ skin: PDA — a newer pocket machine: one glass front almost to the edge
-   (a thin rim of brushed metal), a colour screen. Like the cassette machine it is a generated plate (assets/housing-pda-*.webp,
-   1024 × 1536: silver + white glass = light, graphite + black glass = dark); controls sit on its painted keys, in % of the plate. */
-:root.device[data-skin='pda'] {
+/* ================================================================ skin: Modern — a newer pocket machine, 340 × 440 at scale 1 (the window
+   zooms it like the original). The screen runs to a thin glass rim; counter, mode tabs and window keys live on the screen's top bar,
+   the only hardware is the meter window and the red key. Generated plate (assets/housing-modern-*.webp: silver + white glass = light,
+   graphite + black glass = dark); controls sit on it in px of the 340 × 440 front. */
+:root.device[data-skin='modern'] {
   --pda-frame: linear-gradient(135deg, #f1f2f4, #c3c7cd 38%, #e4e6ea 58%, #a9aeb5);
   --pda-glass: linear-gradient(180deg, #fbfbfc, #eef0f2);
   --pda-glass-edge: rgba(40, 48, 58, 0.18);
   --pda-key: linear-gradient(180deg, #ffffff, #e9ecef);
   --pda-key-edge: rgba(40, 48, 58, 0.2);
   --pda-key-ink: #2a3139;
+  --pda-seg: #1c2228;
   --pda-ink-2: #56616c;
   --lcd: #edf1f4; --lcd-hi: #f9fbfc; --lcd-ink: #1a1f25; --lcd-ink-2: #56616c; --lcd-line: rgba(26, 31, 37, 0.12); --lcd-chip: #27313b;
 }
-:root.device[data-skin='pda'][data-plastic='black'] {
+:root.device[data-skin='modern'][data-plastic='black'] {
   --pda-frame: linear-gradient(135deg, #5d6167, #2b2e32 38%, #474b50 58%, #1b1d20);
   --pda-glass: linear-gradient(180deg, #121417, #0a0b0d);
   --pda-glass-edge: rgba(255, 255, 255, 0.08);
   --pda-key: linear-gradient(180deg, #2a2e33, #1d2024);
   --pda-key-edge: rgba(0, 0, 0, 0.7);
   --pda-key-ink: #e3e8ec;
+  --pda-seg: #dbe6ee;
   --pda-ink-2: #a3aeb8;
   /* chips stay the inverse of the screen: light chips with dark text on the dark screen */
   --lcd: #141a20; --lcd-hi: #1b232b; --lcd-ink: #e6ecf0; --lcd-ink-2: #a3aeb8; --lcd-line: rgba(230, 236, 240, 0.14); --lcd-chip: #d5dee6;
 }
-[data-skin='pda'] .housing { background-image: url('./assets/housing-pda-light.webp'); }
-[data-skin='pda'][data-plastic='black'] .housing { background-image: url('./assets/housing-pda-dark.webp'); }
-[data-skin='pda'] .hw-led { left: 7.3%; top: 5.6%; width: 1.8%; height: 1.2%; }
-[data-skin='pda'] .hw-counter { left: 10.5%; top: 3.6%; width: 25%; height: 5.2%; }
-/* the round corner keys and the rocker: invisible caps over the painted keys */
-[data-skin='pda'] .key { border-radius: 16px; }
-[data-skin='pda'] .key:active, [data-skin='pda'] .key[aria-pressed='true'], [data-skin='pda'] .key[aria-selected='true'] { transform: translateY(1px); background: rgba(0, 0, 0, 0.07); box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.22); }
-[data-skin='pda'][data-plastic='black'] .key:active, [data-skin='pda'][data-plastic='black'] .key[aria-pressed='true'], [data-skin='pda'][data-plastic='black'] .key[aria-selected='true'] { background: rgba(0, 0, 0, 0.3); box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6); }
-[data-skin='pda'] .hw-pin, [data-skin='pda'] .hw-min, [data-skin='pda'] .hw-close { top: 3.6%; width: 7.7%; height: 5.2%; color: var(--pda-key-ink); border-radius: 50%; }
-[data-skin='pda'] .hw-pin { left: 74.6%; }
-[data-skin='pda'] .hw-min, [data-skin='pda'] .hw-close { left: 84.3%; }
-[data-skin='pda'] .keyicon { filter: none; width: 15px; height: 15px; }
-[data-skin='pda'] .hw-tab { top: 10.2%; height: 5.8%; color: var(--pda-key-ink); font-size: 10.5px; border-radius: 13px; }
-[data-skin='pda'] .hw-tab[aria-selected='true'] { color: var(--pda-key-ink); }
-[data-skin='pda'] .hw-tab .lamp { background: rgba(127, 136, 146, 0.45); }
-[data-skin='pda'] .hw-tab1 { left: 5%; width: 44.6%; }
-[data-skin='pda'] .hw-tab2 { left: 50.4%; width: 44.6%; }
-/* colour screen, flush under the glass */
-[data-skin='pda'] .hw-lcd { --lcd-ink-2: var(--pda-ink-2); left: 5%; top: 17.6%; width: 90%; height: 66%; border-radius: 10px;
-  background: linear-gradient(180deg, var(--lcd-hi), var(--lcd)); box-shadow: 0 0 0 1px var(--pda-glass-edge), inset 0 1px 3px rgba(0, 0, 0, 0.12); }
-[data-skin='pda'] .lcd { background: linear-gradient(180deg, var(--lcd-hi), var(--lcd)); box-shadow: none; }
-[data-skin='pda'] .lcd-head { background: transparent; color: var(--lcd-ink); border-bottom: 1px solid var(--lcd-line); }
-[data-skin='pda'] .lcd-input, [data-skin='pda'] .lcd .prep .input { background: var(--lcd-hi); border-color: var(--lcd-line); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12); }
-[data-skin='pda'] .lcd-error { color: #c8321f !important; }
-[data-skin='pda'][data-plastic='black'] .lcd-error { color: #ff8a73 !important; }
-[data-skin='pda'] .toast-lcd .bar div { background: var(--led); }
-/* bottom row: the meter window left, the red key right */
-[data-skin='pda'] .hw-meters { left: 6.6%; top: 86.5%; width: 23.9%; height: 5.1%; }
-[data-skin='pda'] .hw-meters .meter span { width: 12px; height: 5px; }
-[data-skin='pda'] .hw-live { left: 6.3%; top: 91.9%; width: 3%; }
-[data-skin='pda'] .hw-end { left: 63.5%; top: 86.4%; width: 31.5%; height: 8.2%; border-radius: 30px; }
-[data-skin='pda'] .resize-grip { right: 12px; bottom: 12px; border-bottom-right-radius: 28px; }
-[data-skin='pda'][data-plastic='beige'] .resize-grip { filter: invert(0.7); }
+[data-skin='modern'] .housing { background-image: url('./assets/housing-modern-light.webp'); }
+[data-skin='modern'][data-plastic='black'] .housing { background-image: url('./assets/housing-modern-dark.webp'); }
+[data-skin='modern'] .toast .toast-device { aspect-ratio: 340 / 440; }
+/* the screen's top bar */
+[data-skin='modern'] .housing::after { content: ''; position: absolute; left: 8px; top: 8px; width: 324px; height: 40px; border-radius: 18px 18px 0 0; background: var(--lcd-hi); border-bottom: 1px solid var(--lcd-line); pointer-events: none; }
+[data-skin='modern'] .hw { z-index: 1; }
+[data-skin='modern'] .hw-led { left: 20px; top: 25px; width: 6px; height: 6px; mix-blend-mode: normal; background: radial-gradient(circle at 35% 30%, #ffb3a6, var(--rec) 60%, #7a1a0e); box-shadow: 0 0 5px rgba(217, 58, 38, 0.7); }
+[data-skin='modern'] .hw-led.off { opacity: 1; background: var(--lcd-line); box-shadow: none; }
+[data-skin='modern'] .hw-counter { left: 30px; top: 16px; width: 82px; height: 24px; justify-content: flex-start; padding-left: 8px; }
+[data-skin='modern'] .hw-counter .counter { color: var(--lcd-ink); text-shadow: none; }
+[data-skin='modern'] .hw-counter .counter b { font-size: 13px; }
+[data-skin='modern'] .hw-counter .counter b::before { opacity: 0.07; }
+[data-skin='modern'] .hw-counter .counter i { font-size: 7px; color: var(--lcd-ink-2); }
+/* on-screen controls: flat, the chosen tab is a filled chip */
+[data-skin='modern'] .key { border-radius: 12px; color: var(--lcd-ink-2); }
+[data-skin='modern'] .key:hover { background: var(--lcd-line); }
+[data-skin='modern'] .key:active, [data-skin='modern'] .key[aria-pressed='true'], [data-skin='modern'] .key[aria-selected='true'] { transform: none; background: var(--lcd-line); box-shadow: none; }
+[data-skin='modern'] .hw-tab { top: 16px; height: 24px; font-size: 9px; letter-spacing: 0.08em; color: var(--lcd-ink-2); }
+[data-skin='modern'] .hw-tab[aria-selected='true'] { background: var(--lcd-chip); color: var(--lcd-hi); }
+[data-skin='modern'] .hw-tab .lamp { display: none; }
+[data-skin='modern'] .hw-tab1 { left: 118px; width: 74px; }
+[data-skin='modern'] .hw-tab2 { left: 194px; width: 74px; }
+[data-skin='modern'] .hw-pin, [data-skin='modern'] .hw-min, [data-skin='modern'] .hw-close { top: 17px; width: 22px; height: 22px; border-radius: 50%; color: var(--lcd-ink-2); }
+[data-skin='modern'] .hw-pin { left: 276px; }
+[data-skin='modern'] .hw-min, [data-skin='modern'] .hw-close { left: 302px; }
+[data-skin='modern'] .hw-pin[aria-pressed='true'] { color: var(--lcd-ink); }
+[data-skin='modern'] .keyicon { filter: none; width: 12px; height: 12px; }
+/* the call-start and notes window: no pin key and the counter repeats the red key, so its two keys get the whole bar */
+[data-skin='modern'] .toast-device .hw-counter { display: none; }
+[data-skin='modern'] .toast-device .hw-tab1 { left: 32px; width: 118px; }
+[data-skin='modern'] .toast-device .hw-tab2 { left: 152px; width: 144px; }
+/* the screen */
+[data-skin='modern'] .hw-lcd { --lcd-ink-2: var(--pda-ink-2); left: 8px; top: 48px; width: 324px; height: 338px; border-radius: 0 0 12px 12px; background: linear-gradient(180deg, var(--lcd-hi), var(--lcd)); box-shadow: none; }
+[data-skin='modern'] .lcd { background: linear-gradient(180deg, var(--lcd-hi), var(--lcd)); box-shadow: none; }
+[data-skin='modern'] .lcd-head { background: transparent; color: var(--lcd-ink); border-bottom: 1px solid var(--lcd-line); }
+[data-skin='modern'] .lcd-head b { font-size: 11px; }
+[data-skin='modern'] .lcd-input, [data-skin='modern'] .lcd .prep .input { background: var(--lcd-hi); border-color: var(--lcd-line); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12); }
+[data-skin='modern'] .lcd-error { color: #c8321f !important; }
+[data-skin='modern'][data-plastic='black'] .lcd-error { color: #ff8a73 !important; }
+[data-skin='modern'] .toast-lcd .bar div { background: var(--led); }
+/* hardware under the screen: meter window, live lamp, the red key */
+[data-skin='modern'] .hw-meters { left: 16px; top: 398px; width: 80px; height: 28px; gap: 2px; }
+[data-skin='modern'] .hw-meters .meter span { width: 8px; height: 3px; }
+[data-skin='modern'] .hw-live { left: 101px; top: 405px; width: 12px; height: 14px; }
+[data-skin='modern'] .hw-end { left: 222px; top: 396px; width: 102px; height: 32px; border-radius: 16px; font-size: 11px; color: #fff; }
+[data-skin='modern'] .hw-end::before { width: 7px; height: 7px; }
+[data-skin='modern'] .hw-end:active { box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); }
+[data-skin='modern'] .resize-grip { right: 6px; bottom: 6px; border-bottom-right-radius: 22px; }
+[data-skin='modern'][data-plastic='beige'] .resize-grip { filter: invert(0.7); }
 
 /* capsule and flip display in the same metal and glass */
-[data-skin='pda'] .capsule { background: var(--pda-frame); border-radius: 22px; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), inset 0 -1px 2px rgba(0, 0, 0, 0.35); }
-[data-skin='pda'] .cap-face { background: var(--pda-glass); border-radius: 16px; box-shadow: 0 0 0 1px var(--pda-glass-edge); }
-[data-skin='pda'] .cap-tray { background: none; box-shadow: none; }
-[data-skin='pda'] .cap-window { background: var(--lcd); box-shadow: 0 0 0 1px var(--pda-glass-edge); border-radius: 10px; }
-[data-skin='pda'] .cap-window .counter { color: var(--pda-seg); text-shadow: none; }
-[data-skin='pda'] .cap-window .meter span { background: rgba(127, 136, 146, 0.35); }
-[data-skin='pda'] .cap-sep { background: var(--lcd-line); }
-[data-skin='pda'] .cap-key { border: 0; border-radius: 12px; background: var(--pda-key); color: var(--pda-key-ink); box-shadow: 0 0 0 1px var(--pda-key-edge), 0 1px 2px rgba(0, 0, 0, 0.18); }
-[data-skin='pda'] .cap-key .keyicon { color: var(--pda-key-ink); }
-[data-skin='pda'] .cap-key.red { color: #fff; background: linear-gradient(180deg, #ec5a45, #cf3722); box-shadow: 0 0 0 1px rgba(120, 25, 12, 0.6); }
-[data-skin='pda'] .flip-hinge { background: var(--pda-frame); box-shadow: none; }
-[data-skin='pda'] .flip-body { background: var(--pda-frame); border-radius: 4px 4px 18px 18px; }
-[data-skin='pda'] .flip-lcd { border-radius: 12px; }
+[data-skin='modern'] .capsule { background: var(--pda-frame); border-radius: 22px; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), inset 0 -1px 2px rgba(0, 0, 0, 0.35); }
+[data-skin='modern'] .cap-face { background: var(--pda-glass); border-radius: 16px; box-shadow: 0 0 0 1px var(--pda-glass-edge); }
+[data-skin='modern'] .cap-tray { background: none; box-shadow: none; }
+[data-skin='modern'] .cap-window { background: var(--lcd); box-shadow: 0 0 0 1px var(--pda-glass-edge); border-radius: 10px; }
+[data-skin='modern'] .cap-window .counter { color: var(--pda-seg); text-shadow: none; }
+[data-skin='modern'] .cap-window .meter span { background: rgba(127, 136, 146, 0.35); }
+[data-skin='modern'] .cap-sep { background: var(--lcd-line); }
+[data-skin='modern'] .cap-key { border: 0; border-radius: 12px; background: var(--pda-key); color: var(--pda-key-ink); box-shadow: 0 0 0 1px var(--pda-key-edge), 0 1px 2px rgba(0, 0, 0, 0.18); }
+[data-skin='modern'] .cap-key .keyicon { color: var(--pda-key-ink); }
+[data-skin='modern'] .cap-key.red { color: #fff; background: linear-gradient(180deg, #ec5a45, #cf3722); box-shadow: 0 0 0 1px rgba(120, 25, 12, 0.6); }
+[data-skin='modern'] .flip-hinge { background: var(--pda-frame); box-shadow: none; }
+[data-skin='modern'] .flip-body { background: var(--pda-frame); border-radius: 4px 4px 18px 18px; }
+[data-skin='modern'] .flip-lcd { border-radius: 12px; }
+/* the modern capsule is 340 wide at scale 1: tighter tray, smaller keys */
+[data-skin='modern'] .capsule { padding: 6px; }
+[data-skin='modern'] .cap-face { padding: 6px; }
+[data-skin='modern'] .cap-tray { gap: 4px; padding: 0 4px 0 6px; }
+[data-skin='modern'] .cap-window { gap: 5px; padding: 0 7px; height: 32px; }
+[data-skin='modern'] .cap-window .counter b { font-size: 12px; }
+[data-skin='modern'] .cap-window .meter span { width: 5px; }
+[data-skin='modern'] .cap-key { height: 30px; min-width: 30px; padding: 0 7px; font-size: 9.5px; letter-spacing: 0.03em; gap: 4px; }
+[data-skin='modern'] .cap-key.icon { width: 30px; padding: 0; }
+[data-skin='modern'] .cap-key.red::before { width: 6px; height: 6px; }
+[data-skin='modern'][data-plastic='black'] .capsule { background: var(--pda-frame); box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), inset 0 -1px 2px rgba(0, 0, 0, 0.6); }
+[data-skin='modern'][data-plastic='black'] .cap-face { background: var(--pda-glass); box-shadow: 0 0 0 1px var(--pda-glass-edge); }
+[data-skin='modern'][data-plastic='black'] .cap-window { box-shadow: 0 0 0 1px var(--pda-glass-edge); }
